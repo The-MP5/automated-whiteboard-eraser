@@ -1,73 +1,89 @@
-# Welcome to your Lovable project
+🤖 Smart Board Buddy: Automated Whiteboard Eraser System (ROS Simulation)
 
-## Project info
+Project Overview
 
-**URL**: https://lovable.dev/projects/730e7022-1602-42eb-8b5c-97f6633e6902
+The Smart Board Buddy is a Senior Capstone project simulating an advanced robotic system for classroom whiteboard management. The primary goal is to automate the erasure process (Full or Partial Erase) to save teacher time and ensure accessibility for students by digitally archiving notes.
 
-## How can I edit this code?
+This is a simulation interface built to validate the core system logic, communication, and adherence to safety and performance constraints before deploying to the physical robotic hardware (ROS/Kinova).
 
-There are several ways of editing your application.
+✨ Core Requirements Implemented
 
-**Use Lovable**
+The interface demonstrates compliance with the following critical requirements:
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/730e7022-1602-42eb-8b5c-97f6633e6902) and start prompting.
+Erase Control (FR2): Supports one-touch Full Board Erase and Partial Erase via selection on the interactive canvas (Fabric.js).
 
-Changes made via Lovable will be committed automatically to this repo.
+Safety & Pause (FR4, NFR3): Includes a function to Simulate Obstacle, automatically pausing the operation if the system detects an object within 0.5m.
 
-**Use your preferred IDE**
+Performance (NFR1): The erase process is timed to complete within the 10-second target for a standard 4ft x 6ft whiteboard.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+Digital Archiving (Story 7): Allows users to save a snapshot of the current canvas state to the Supabase database before initiating erasure.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+Accessibility Alert (Story 6): Displays a clear, mandatory 10-second countdown before any erase operation begins.
 
-Follow these steps:
+🛠️ Technical Stack & Configuration
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+The application is built on a modern Vite + React + TypeScript stack, utilizing professional component libraries and a clear structure.
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+Frontend: React (TSX) ⚛️
 
-# Step 3: Install the necessary dependencies.
-npm i
+Styling/Components: Tailwind CSS, shadcn/ui (configured via components.json)
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+Canvas Library: Fabric.js
+
+Build Tool: Vite (Development port confirmed as 8080 in vite.config.ts)
+
+Database: Supabase (@supabase/supabase-js) 🟢
+
+🚀 Getting Started (Local Development)
+
+Prerequisites
+
+You must have Node.js (LTS recommended) and a package manager (npm, yarn, or bun) installed. You will also need credentials for a Supabase project.
+
+1. Installation
+
+Clone the repository and install dependencies:
+
+git clone [https://github.com/The-MP5/smart-board-buddy.git](https://github.com/The-MP5/smart-board-buddy.git)
+cd smart-board-buddy
+npm install 
+
+
+2. Supabase Setup
+
+The simulation requires database credentials for storing persistent data (logs and snapshots).
+
+Create a Supabase project and find your Project URL and Anon Public Key.
+
+Create a .env file in the project root:
+
+# Supabase Credentials
+VITE_SUPABASE_URL="YOUR_SUPABASE_PROJECT_URL"
+VITE_SUPABASE_ANON_KEY="YOUR_SUPABASE_ANON_KEY"
+
+
+
+Ensure your Supabase instance includes tables for Notes (for snapshots) and SystemLogs (for NFR2 compliance).
+
+3. Running the Simulator
+
+The development server is configured to run on port 8080:
+
 npm run dev
-```
 
-**Edit a file directly in GitHub**
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+The simulator will be available at http://localhost:8080.
 
-**Use GitHub Codespaces**
+🧪 Testing & Verification Approach
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+The project adheres to the documented Agile Testing Approach, emphasizing integration across different system layers:
 
-## What technologies are used for this project?
+Unit Testing: Validating isolated logic functions (e.g., coordinate conversion).
 
-This project is built with:
+HIL (Hardware-in-the-Loop) Testing: Testing the simulated ROS/Kinematics control flow.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Integration Testing: Verifying the full E2E digital flow (UI to API to Supabase).
 
-## How can I deploy this project?
+UAT: Manual verification of usability and safety features by end-users.
 
-Simply open [Lovable](https://lovable.dev/projects/730e7022-1602-42eb-8b5c-97f6633e6902) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Created by Group 21: Nia Greene, Kamora Mccowan, Vikash Rivers, Gabriel Moore, Jibek Gupta
