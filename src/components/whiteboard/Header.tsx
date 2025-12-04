@@ -16,7 +16,7 @@ const Header = ({ isConnected }: HeaderProps) => {
             </div>
             <div>
               <h1 className="text-xl font-bold tracking-tight">
-                Smart Board Buddy
+                Automated Whiteboard Eraser
               </h1>
               <p className="text-xs text-muted-foreground">
                 Senior Capstone Project • ROS Simulation Interface
