@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AlertTriangle, Volume2 } from "lucide-react";
 
 interface CountdownOverlayProps {
@@ -15,30 +15,40 @@ const CountdownOverlay = ({
   isActive 
 }: CountdownOverlayProps) => {
   const [currentSeconds, setCurrentSeconds] = useState(seconds);
+  const hasCompletedRef = useRef(false);
+
+  // Defensive: reject invalid countdown values and normalize to a sane integer.
+  const normalizedSeconds = useMemo(() => {
+    if (!Number.isFinite(seconds)) return 10;
+    return Math.max(1, Math.floor(seconds));
+  }, [seconds]);
 
   useEffect(() => {
     if (!isActive) {
-      setCurrentSeconds(seconds);
+      hasCompletedRef.current = false;
+      setCurrentSeconds(normalizedSeconds);
       return;
     }
 
-    if (currentSeconds <= 0) {
+    if (currentSeconds <= 0 && !hasCompletedRef.current) {
+      hasCompletedRef.current = true;
       onComplete();
       return;
     }
 
     const timer = setInterval(() => {
-      setCurrentSeconds(prev => prev - 1);
+      setCurrentSeconds(prev => Math.max(0, prev - 1));
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [isActive, currentSeconds, onComplete, seconds]);
+  }, [isActive, currentSeconds, onComplete, normalizedSeconds]);
 
   useEffect(() => {
     if (isActive) {
-      setCurrentSeconds(seconds);
+      hasCompletedRef.current = false;
+      setCurrentSeconds(normalizedSeconds);
     }
-  }, [isActive, seconds]);
+  }, [isActive, normalizedSeconds]);
 
   if (!isActive) return null;
 
@@ -88,7 +98,7 @@ const CountdownOverlay = ({
                 strokeWidth="8"
                 strokeLinecap="round"
                 strokeDasharray={2 * Math.PI * 130}
-                strokeDashoffset={2 * Math.PI * 130 * (1 - currentSeconds / seconds)}
+                strokeDashoffset={2 * Math.PI * 130 * (1 - currentSeconds / normalizedSeconds)}
                 className="transition-all duration-1000 ease-linear"
                 style={{ filter: 'drop-shadow(0 0 10px hsl(185 75% 50% / 0.5))' }}
               />
