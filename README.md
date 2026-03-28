@@ -1,89 +1,102 @@
-🤖 Smart Board Buddy: Automated Whiteboard Eraser System (ROS Simulation)
+# 🤖 Smart Board Buddy — Automated Whiteboard Eraser (ROS simulation)
 
-Project Overview
+Senior Capstone (**Group 21**): Nia Greene, Kamora Mccowan, Vikash Rivers, Gabriel Moore, Jibek Gupta.
 
-The Smart Board Buddy is a Senior Capstone project simulating an advanced robotic system for classroom whiteboard management. The primary goal is to automate the erasure process (Full or Partial Erase) to save teacher time and ensure accessibility for students by digitally archiving notes.
+---
 
-This is a simulation interface built to validate the core system logic, communication, and adherence to safety and performance constraints before deploying to the physical robotic hardware (ROS/Kinova).
+## Project overview
 
-✨ Core Requirements Implemented
+**Smart Board Buddy** simulates an automated classroom whiteboard eraser: full or partial erase, safety behavior, and digital archiving—before deploying to physical hardware (ROS / Kinova).
 
-The interface demonstrates compliance with the following critical requirements:
+This repo is the **React simulation UI** used to validate logic, timing, and constraints against product requirements.
 
-Erase Control (FR2): Supports one-touch Full Board Erase and Partial Erase via selection on the interactive canvas (Fabric.js).
+---
 
-Safety & Pause (FR4, NFR3): Includes a function to Simulate Obstacle, automatically pausing the operation if the system detects an object within 0.5m.
+## 📚 Documentation
 
-Performance (NFR1): The erase process is timed to complete within the 10-second target for a standard 4ft x 6ft whiteboard.
+**Architecture, technical debt, and backlog-ready notes** live in [`docs/`](./docs/). Start here:
 
-Digital Archiving (Story 7): Allows users to save a snapshot of the current canvas state to the Supabase database before initiating erasure.
+| | |
+|:---|:---|
+| **[Project reset & architecture baseline](./docs/PROJECT_RESET_REPORT.md)** | Lab 1 — system diagram, component map, backlog health |
+| **[Risk & technical debt inventory](./docs/DEBT_AND_RISK.md)** | Debt items, AI risks, acceptance criteria for GitHub issues |
+| **[Architecture diagram (SVG)](./docs/architecture-diagram.svg)** | Visual used in the project reset report |
 
-Accessibility Alert (Story 6): Displays a clear, mandatory 10-second countdown before any erase operation begins.
+---
 
-🛠️ Technical Stack & Configuration
+## ✨ Core requirements (interface)
 
-The application is built on a modern Vite + React + TypeScript stack, utilizing professional component libraries and a clear structure.
+| Area | What the UI demonstrates |
+|------|---------------------------|
+| **Erase control (FR2)** | One-touch full erase and partial erase via Fabric.js canvas |
+| **Safety & pause (FR4, NFR3)** | Simulate obstacle — pauses when “object” is within 0.5 m |
+| **Performance (NFR1)** | Erase timed toward a **10 s** target for a standard board |
+| **Digital archiving (Story 7)** | Snapshot canvas state (persistence design in docs; see debt notes) |
+| **Accessibility alert (Story 6)** | **10 s** countdown before erase starts |
 
-Frontend: React (TSX) ⚛️
+---
 
-Styling/Components: Tailwind CSS, shadcn/ui (configured via components.json)
+## 🛠️ Technical stack
 
-Canvas Library: Fabric.js
+| Layer | Choice |
+|------|--------|
+| **Frontend** | React + TypeScript (Vite) ⚛️ |
+| **UI** | Tailwind CSS, shadcn/ui |
+| **Canvas** | Fabric.js |
+| **Build** | Vite (dev server port set in `vite.config.ts`, often **8080**) |
+| **Backend (optional)** | Supabase client (`@supabase/supabase-js`) 🟢 |
 
-Build Tool: Vite (Development port confirmed as 8080 in vite.config.ts)
+---
 
-Database: Supabase (@supabase/supabase-js) 🟢
+## 🚀 Getting started
 
-🚀 Getting Started (Local Development)
+### Prerequisites
 
-Prerequisites
+- **Node.js** (LTS) and **npm** (or yarn / bun)
+- **Supabase** project credentials if you enable persistence (see below)
 
-You must have Node.js (LTS recommended) and a package manager (npm, yarn, or bun) installed. You will also need credentials for a Supabase project.
+### Install
 
-1. Installation
+```bash
+git clone https://github.com/The-MP5/automated-whiteboard-eraser.git
+cd automated-whiteboard-eraser
+npm install
+```
 
-Clone the repository and install dependencies:
+### Supabase (optional for full persistence story)
 
-git clone [https://github.com/The-MP5/smart-board-buddy.git](https://github.com/The-MP5/smart-board-buddy.git)
-cd smart-board-buddy
-npm install 
+Create a `.env` in the project root:
 
-
-2. Supabase Setup
-
-The simulation requires database credentials for storing persistent data (logs and snapshots).
-
-Create a Supabase project and find your Project URL and Anon Public Key.
-
-Create a .env file in the project root:
-
-# Supabase Credentials
+```env
 VITE_SUPABASE_URL="YOUR_SUPABASE_PROJECT_URL"
 VITE_SUPABASE_ANON_KEY="YOUR_SUPABASE_ANON_KEY"
+```
 
+Align table/schema and env var names with [`docs/DEBT_AND_RISK.md`](./docs/DEBT_AND_RISK.md) as the project wires up real persistence.
 
+### Run the simulator
 
-Ensure your Supabase instance includes tables for Notes (for snapshots) and SystemLogs (for NFR2 compliance).
-
-3. Running the Simulator
-
-The development server is configured to run on port 8080:
-
+```bash
 npm run dev
+```
 
+Open the URL Vite prints (e.g. `http://localhost:8080` if configured for port 8080).
 
-The simulator will be available at http://localhost:8080.
+---
 
-🧪 Testing & Verification Approach
+## 🧪 Testing & verification
 
-The project adheres to the documented Agile Testing Approach, emphasizing integration across different system layers:
+The intended approach follows the course **Agile testing** model:
 
-Unit Testing: Validating isolated logic functions (e.g., coordinate conversion).
+| Layer | Focus |
+|--------|--------|
+| **Unit** | Isolated logic (e.g. coordinates, simulation helpers) |
+| **HIL** | Simulated ROS / control flow |
+| **Integration** | UI → data layer → Supabase |
+| **UAT** | Manual checks on usability and safety flows |
 
-HIL (Hardware-in-the-Loop) Testing: Testing the simulated ROS/Kinematics control flow.
+---
 
-Integration Testing: Verifying the full E2E digital flow (UI to API to Supabase).
+## 📄 License / course
 
-UAT: Manual verification of usability and safety features by end-users.
-
-Created by Group 21: Nia Greene, Kamora Mccowan, Vikash Rivers, Gabriel Moore, Jibek Gupta
+Capstone project — use and attribution per your institution’s policies.
