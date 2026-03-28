@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 520" font-family="system-ui, sans-serif" font-size="12">
+  <title>Smart Board Buddy - System Architecture</title>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#334155"/></marker>
+    <marker id="arrow-dash" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#94a3b8"/></marker>
+  </defs>
+  <text x="360" y="24" text-anchor="middle" font-weight="bold" font-size="14">Smart Board Buddy  System Architecture</text>
+  <rect x="280" y="40" width="160" height="44" rx="6" fill="#e2e8f0" stroke="#64748b" stroke-width="1"/>
+  <text x="360" y="58" text-anchor="middle" font-weight="600">App.tsx</text>
+  <text x="360" y="72" text-anchor="middle" fill="#475569">Router, QueryClient, Toaster</text>
+  <rect x="300" y="100" width="120" height="32" rx="6" fill="#cbd5e1" stroke="#475569"/>
+  <text x="360" y="118" text-anchor="middle" font-weight="600">Index (Main Page)</text>
+  <line x1="360" y1="84" x2="360" y2="100" stroke="#334155" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="220" y="148" width="320" height="56" rx="8" fill="#3b82f6" stroke="#1d4ed8"/>
+  <text x="360" y="168" text-anchor="middle" font-weight="bold" fill="white">useWhiteboardSimulation</text>
+  <text x="360" y="188" text-anchor="middle" fill="rgba(255,255,255,0.9)">status, notes, logs, eraseMode, progress, proximitySensor</text>
+  <line x1="360" y1="132" x2="360" y2="148" stroke="#334155" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="20" y="240" width="100" height="48" rx="6" fill="#f1f5f9" stroke="#64748b"/>
+  <text x="70" y="258" text-anchor="middle" font-weight="600">Header</text>
+  <text x="70" y="272" text-anchor="middle">(ROS status)</text>
+  <rect x="130" y="240" width="100" height="48" rx="6" fill="#f1f5f9" stroke="#64748b"/>
+  <text x="180" y="258" text-anchor="middle" font-weight="600">ControlPanel</text>
+  <text x="180" y="272" text-anchor="middle">Start/Pause/Stop</text>
+  <rect x="240" y="240" width="120" height="48" rx="6" fill="#f1f5f9" stroke="#64748b"/>
+  <text x="300" y="258" text-anchor="middle" font-weight="600">WhiteboardCanvas</text>
+  <text x="300" y="272" text-anchor="middle">Fabric.js, Snapshot</text>
+  <rect x="370" y="240" width="100" height="48" rx="6" fill="#f1f5f9" stroke="#64748b"/>
+  <text x="420" y="258" text-anchor="middle" font-weight="600">StatusDisplay</text>
+  <text x="420" y="272" text-anchor="middle">Progress, Sensor</text>
+  <rect x="480" y="240" width="100" height="48" rx="6" fill="#f1f5f9" stroke="#64748b"/>
+  <text x="530" y="258" text-anchor="middle" font-weight="600">NotesPanel</text>
+  <text x="530" y="272" text-anchor="middle">Notes, Logs</text>
+  <rect x="590" y="240" width="110" height="48" rx="6" fill="#f1f5f9" stroke="#64748b"/>
+  <text x="645" y="258" text-anchor="middle" font-weight="600">CountdownOverlay</text>
+  <text x="645" y="272" text-anchor="middle">10s warning</text>
+  <line x1="280" y1="204" x2="70" y2="240" stroke="#334155" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="320" y1="204" x2="180" y2="240" stroke="#334155" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="360" y1="204" x2="300" y2="240" stroke="#334155" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="400" y1="204" x2="420" y2="240" stroke="#334155" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="440" y1="204" x2="530" y2="240" stroke="#334155" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="480" y1="204" x2="645" y2="240" stroke="#334155" stroke-width="1" marker-end="url(#arrow)"/>
+  <rect x="40" y="340" width="140" height="44" rx="6" fill="#fef2f2" stroke="#b91c1c" stroke-dasharray="4"/>
+  <text x="110" y="358" text-anchor="middle" font-weight="600">Supabase Client</text>
+  <text x="110" y="372" text-anchor="middle" fill="#991b1b">(unused)</text>
+  <rect x="540" y="340" width="140" height="44" rx="6" fill="#f0fdf4" stroke="#15803d"/>
+  <text x="610" y="358" text-anchor="middle" font-weight="600">Fabric.js</text>
+  <text x="610" y="372" text-anchor="middle">(canvas)</text>
+  <path d="M 260 200 Q 180 270 110 340" fill="none" stroke="#94a3b8" stroke-width="1" stroke-dasharray="6 4" marker-end="url(#arrow-dash)"/>
+  <text x="160" y="265" fill="#64748b" font-size="10">notes/logs in-memory only</text>
+  <path d="M 360 288 Q 480 310 610 340" fill="none" stroke="#334155" stroke-width="1" marker-end="url(#arrow)"/>
+  <text x="480" y="318" fill="#475569" font-size="10">toDataURL, clear</text>
+  <rect x="20" y="420" width="680" height="88" rx="6" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="360" y="440" text-anchor="middle" font-weight="600">Data flow</text>
+  <text x="40" y="460" fill="#475569">" Index uses useWhiteboardSimulation(); all UI gets state and callbacks from the hook.</text>
+  <text x="40" y="476" fill="#475569">" WhiteboardCanvas uses Fabric.js for drawing and erase. Supabase is created but not used; notes and logs stay in React state.</text>
+</svg>
