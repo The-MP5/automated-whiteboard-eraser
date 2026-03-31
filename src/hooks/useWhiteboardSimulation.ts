@@ -10,10 +10,14 @@ import {
   EraseProgress 
 } from "@/types/whiteboard";
 import { toast } from "sonner";
-
-const COUNTDOWN_SECONDS = 10;
-const ERASE_DURATION_MS = 10000; // NFR1: 10 seconds for full board
-const PROXIMITY_THRESHOLD = 0.5; // FR4: 0.5 meters
+import {
+  STORY6_COUNTDOWN_SECONDS,
+  NFR1_ERASE_DURATION_MS,
+  FR4_PROXIMITY_THRESHOLD_METERS,
+  FR4_SIMULATED_OBSTACLE_DISTANCE_METERS,
+  FR4_DEFAULT_CLEAR_DISTANCE_METERS,
+  WHITEBOARD_CANVAS_BACKGROUND_COLOR,
+} from "@/config/simulation";
 
 export const useWhiteboardSimulation = () => {
   const [status, setStatus] = useState<SystemStatus>('idle');
@@ -25,8 +29,8 @@ export const useWhiteboardSimulation = () => {
   const [isObstacleSimulated, setIsObstacleSimulated] = useState(false);
   const [proximitySensor, setProximitySensor] = useState<ProximitySensor>({
     isObstacleDetected: false,
-    distance: 2.0,
-    threshold: PROXIMITY_THRESHOLD,
+    distance: FR4_DEFAULT_CLEAR_DISTANCE_METERS,
+    threshold: FR4_PROXIMITY_THRESHOLD_METERS,
   });
 
   const fabricCanvasRef = useRef<FabricCanvas | null>(null);
@@ -93,13 +97,13 @@ export const useWhiteboardSimulation = () => {
 
     const updateProgress = () => {
       const elapsed = Date.now() - startTime;
-      const percentage = Math.min(100, (elapsed / ERASE_DURATION_MS) * 100);
+      const percentage = Math.min(100, (elapsed / NFR1_ERASE_DURATION_MS) * 100);
       progressRef.current = percentage;
 
       setProgress({
         percentage,
         timeElapsed: elapsed / 1000,
-        timeRemaining: Math.max(0, (ERASE_DURATION_MS - elapsed) / 1000),
+        timeRemaining: Math.max(0, (NFR1_ERASE_DURATION_MS - elapsed) / 1000),
         isPaused: false,
       });
 
@@ -121,7 +125,7 @@ export const useWhiteboardSimulation = () => {
     if (fabricCanvasRef.current) {
       if (eraseMode === 'full') {
         fabricCanvasRef.current.clear();
-        fabricCanvasRef.current.backgroundColor = "#f8fafc";
+        fabricCanvasRef.current.backgroundColor = WHITEBOARD_CANVAS_BACKGROUND_COLOR;
       } else if (partialArea) {
         // For partial erase, remove objects in the selected area
         const objects = fabricCanvasRef.current.getObjects();
@@ -216,8 +220,8 @@ export const useWhiteboardSimulation = () => {
       // Simulate obstacle appearing
       setProximitySensor({
         isObstacleDetected: true,
-        distance: 0.3, // Less than 0.5m threshold
-        threshold: PROXIMITY_THRESHOLD,
+        distance: FR4_SIMULATED_OBSTACLE_DISTANCE_METERS,
+        threshold: FR4_PROXIMITY_THRESHOLD_METERS,
       });
 
       if (status === 'erasing') {
@@ -228,15 +232,18 @@ export const useWhiteboardSimulation = () => {
         }
         setStatus('obstacle-detected');
         setProgress(prev => prev ? { ...prev, isPaused: true } : null);
-        addLog('warning', 'FR4: Obstacle detected within 0.5m - operation paused');
+        addLog(
+          'warning',
+          `FR4: Obstacle detected within ${FR4_PROXIMITY_THRESHOLD_METERS}m - operation paused`,
+        );
         toast.warning("Obstacle detected! Operation paused for safety.");
       }
     } else {
       // Clear obstacle
       setProximitySensor({
         isObstacleDetected: false,
-        distance: 2.0,
-        threshold: PROXIMITY_THRESHOLD,
+        distance: FR4_DEFAULT_CLEAR_DISTANCE_METERS,
+        threshold: FR4_PROXIMITY_THRESHOLD_METERS,
       });
 
       if (status === 'obstacle-detected') {
@@ -259,7 +266,7 @@ export const useWhiteboardSimulation = () => {
     progress,
     proximitySensor,
     isObstacleSimulated,
-    countdownSeconds: COUNTDOWN_SECONDS,
+    countdownSeconds: STORY6_COUNTDOWN_SECONDS,
 
     // Actions
     setCanvas,

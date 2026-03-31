@@ -2,6 +2,11 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { Canvas as FabricCanvas, PencilBrush, Rect, FabricText } from "fabric";
 import { Button } from "@/components/ui/button";
 import { EraseMode, EraseArea } from "@/types/whiteboard";
+import {
+  WHITEBOARD_CANVAS_BACKGROUND_COLOR,
+  WHITEBOARD_CANVAS_MAX_HEIGHT_PX,
+  WHITEBOARD_CANVAS_HEIGHT_VIEWPORT_RATIO,
+} from "@/config/simulation";
 import { 
   Pencil, 
   Type, 
@@ -45,12 +50,15 @@ const WhiteboardCanvas = ({
 
     const container = containerRef.current;
     const width = container.offsetWidth;
-    const height = Math.min(500, window.innerHeight * 0.5);
+    const height = Math.min(
+      WHITEBOARD_CANVAS_MAX_HEIGHT_PX,
+      window.innerHeight * WHITEBOARD_CANVAS_HEIGHT_VIEWPORT_RATIO,
+    );
 
     const canvas = new FabricCanvas(canvasRef.current, {
       width,
       height,
-      backgroundColor: "#f8fafc",
+      backgroundColor: WHITEBOARD_CANVAS_BACKGROUND_COLOR,
       isDrawingMode: true,
     });
 
@@ -138,7 +146,7 @@ const WhiteboardCanvas = ({
   const handleClear = () => {
     if (!fabricCanvas) return;
     fabricCanvas.clear();
-    fabricCanvas.backgroundColor = "#f8fafc";
+    fabricCanvas.backgroundColor = WHITEBOARD_CANVAS_BACKGROUND_COLOR;
     fabricCanvas.renderAll();
   };
 

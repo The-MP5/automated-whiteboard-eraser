@@ -75,7 +75,7 @@ VITE_SUPABASE_URL="YOUR_SUPABASE_PROJECT_URL"
 VITE_SUPABASE_ANON_KEY="YOUR_SUPABASE_ANON_KEY"
 ```
 
-Align table/schema and env var names with [`docs/DEBT_AND_RISK.md`](./docs/DEBT_AND_RISK.md) as the project wires up real persistence.
+The client reads **`VITE_SUPABASE_ANON_KEY`** (Supabase **anon public** key). For backward compatibility, **`VITE_SUPABASE_PUBLISHABLE_KEY`** with the same value is still accepted. Copy [`.env.example`](./.env.example) to `.env` and fill in values. Align table/schema with [`docs/DEBT_AND_RISK.md`](./docs/DEBT_AND_RISK.md) as the project wires up real persistence.
 
 ### Run the simulator
 

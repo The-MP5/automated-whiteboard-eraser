@@ -1,0 +1,20 @@
+Build verification (VIBE — Execute) — 2026-03-31
+Command: npm run build
+Working directory: automated-whiteboard-eraser
+
+vite v5.4.19 building for production...
+transforming...
+Browserslist: browsers data (caniuse-lite) is 9 months old.
+✓ 1977 modules transformed.
+
+dist/index.html                   1.36 kB │ gzip:   0.59 kB
+dist/assets/index-RBwU4NHM.css   64.74 kB │ gzip:  11.39 kB
+dist/assets/index-P4YJ2JLi.js   648.80 kB │ gzip: 199.33 kB
+
+(!) Some chunks are larger than 500 kB after minification.
+
+✓ built in ~1.5s
+Exit code: 0
+
+Manual smoke (recommended for PR evidence): npm run dev → open http://localhost:8080
+— Countdown still 10s; erase progress still ~10s; partial selection + obstacle toggle behave as before.
