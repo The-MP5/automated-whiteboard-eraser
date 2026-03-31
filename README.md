@@ -4,7 +4,7 @@ Senior Capstone (**Group 21**): Nia Greene, Kamora Mccowan, Vikash Rivers, Gabri
 
 ---
 
-## Project overview
+## Project Overview
 
 **Smart Board Buddy** simulates an automated classroom whiteboard eraser: full or partial erase, safety behavior, and digital archiving—before deploying to physical hardware (ROS / Kinova).
 
@@ -37,7 +37,7 @@ This repo is the **React simulation UI** used to validate logic, timing, and con
 
 ---
 
-## 🛠️ Technical stack
+## 🛠️ Technical Stack
 
 | Layer | Choice |
 |------|--------|
@@ -49,7 +49,7 @@ This repo is the **React simulation UI** used to validate logic, timing, and con
 
 ---
 
-## 🚀 Getting started
+## 🚀 Getting Started
 
 ### Prerequisites
 
@@ -85,7 +85,7 @@ Open the URL Vite prints (e.g. `http://localhost:8080` if configured for port 80
 
 ---
 
-## 🧪 Testing & verification
+## 🧪 Testing & Verification
 
 The intended approach follows the course **Agile testing** model:
 
@@ -98,6 +98,6 @@ The intended approach follows the course **Agile testing** model:
 
 ---
 
-## 📄 License / course
+## 📄 License / Course
 
 Capstone project — use and attribution per your institution’s policies.
