@@ -117,3 +117,4 @@ Updated RTM artifact for this sprint is documented in:
 
 ---
 Link to Screnshots of Project Board: https://drive.google.com/drive/folders/1R_WCgfhsrpJ7ZTfeBaHRtTm28p2afikS?usp=sharing
+Link to RTM Update: https://github.com/The-MP5/automated-whiteboard-eraser/blob/main/docs/RTM_LAB5_UPDATE.md
