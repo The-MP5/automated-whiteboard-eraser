@@ -20,14 +20,18 @@ export interface ResolvedSupabaseEnv {
 }
 
 /**
- * Reads Supabase URL and anon key from Vite env.
+ * Reads Supabase URL and anon/public key from Vite env.
  * Returns `null` if either is missing — valid for UI-only runs before persistence is wired.
+ *
+ * `VITE_SUPABASE_ANON_KEY` is preferred; `VITE_SUPABASE_PUBLISHABLE_KEY` is an optional
+ * alias for the same value (some older templates used that name).
  */
 export function tryResolveSupabaseEnv(): ResolvedSupabaseEnv | null {
-  const url = import.meta.env.VITE_SUPABASE_URL?.trim();
+  const url = import.meta.env.VITE_SUPABASE_URL?.trim() ?? '';
   const anonKey =
     import.meta.env.VITE_SUPABASE_ANON_KEY?.trim() ||
-    import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY?.trim();
+    import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY?.trim() ||
+    '';
   if (!url || !anonKey) {
     return null;
   }
@@ -42,7 +46,7 @@ export function requireSupabaseEnv(): ResolvedSupabaseEnv {
   if (!resolved) {
     throw new SupabaseConfigError(
       'Supabase is not configured. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY ' +
-        '(or legacy VITE_SUPABASE_PUBLISHABLE_KEY). See README.md.',
+        '(or VITE_SUPABASE_PUBLISHABLE_KEY with the same anon key value). See README.md.',
     );
   }
   return resolved;

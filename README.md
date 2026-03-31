@@ -25,6 +25,8 @@ This repo is the **React simulation UI** used to validate logic, timing, and con
 | **[Lab 5 RTM update](./docs/RTM_LAB5_UPDATE.md)** | Requirement/debt traceability from board items to PR evidence and sprint status |
 | **[Architecture diagram (SVG)](./docs/architecture-diagram.svg)** | Visual used in the project reset report |
 | **[VIBE refactor (assignment)](./docs/VIBE_REFACTOR_ASSIGNMENT.md)** | Gatekeeper exercise: verification report + PR template |
+| **[Senior Project II — agent workflow](./docs/SENIOR_PROJECT_II_AGENT_WORKFLOW.md)** | Backlog → plan → implement pattern for AI-assisted work |
+| **[NFR4 — compatibility](./docs/NFR4_COMPATIBILITY.md)** | Browser / Node baseline (Subissue 4.4) |
 
 ---
 
@@ -37,6 +39,7 @@ This repo is the **React simulation UI** used to validate logic, timing, and con
 | **Performance (NFR1)** | Erase timed toward a **10 s** target for a standard board |
 | **Digital archiving (Story 7)** | Snapshot canvas state (persistence design in docs; see debt notes) |
 | **Accessibility alert (Story 6)** | **10 s** countdown before erase starts |
+| **Compatibility (NFR4)** | Runs on **last 2** major Chrome / Edge / Firefox / Safari; **Node 20–22 LTS** for dev/build — see [`docs/NFR4_COMPATIBILITY.md`](./docs/NFR4_COMPATIBILITY.md) |
 
 ---
 

@@ -1,13 +1,8 @@
-# VIBE Refactor — Assignment deliverables (Module gatekeeper)
+# VIBE Refactor — Assignment deliverables (Module 2 gatekeeper)
 
-Use the **Pull Request description** below verbatim (fill in bracketed links only). Evidence files: [`build-verification.log`](./build-verification.log).
-
----
-
-## Inventory reference
-
-- **Primary target:** Part 1, **Debt Item 5** — *Hardcoded Constants and Magic Numbers* (`docs/DEBT_AND_RISK.md`).
-- **Secondary (same PR, isolated file):** **Debt Item 3** — env handling for Supabase made explicit and type-safe without requiring a configured backend for UI-only runs.
+**Branch:** `vibe/remove-lovable-tagger`
+**Target Debt Item:** Part 1, **Debt Item 7** — *Lovable Tooling and Conventions Lock-in*
+**Evidence file:** [`build-verification.log`](./build-verification.log)
 
 ---
 
@@ -15,16 +10,41 @@ Use the **Pull Request description** below verbatim (fill in bracketed links onl
 
 ### 🛡️ VIBE Report
 
-1. **Target Selected:** **Centralized simulation configuration** — new module [`src/config/simulation.ts`](../src/config/simulation.ts) holds Story 6 / NFR1 / FR4 timing, proximity, and whiteboard canvas defaults that previously lived as magic numbers in [`useWhiteboardSimulation.ts`](../src/hooks/useWhiteboardSimulation.ts) and [`WhiteboardCanvas.tsx`](../src/components/whiteboard/WhiteboardCanvas.tsx). This is **low-risk** because it does not touch auth, database schema, or the erase state machine’s control flow—only replaces literals with named, documented constants. Cross-referenced in **Debt Item 5** of [`docs/DEBT_AND_RISK.md`](./DEBT_AND_RISK.md).
+1. **Target Selected:** **`vite.config.ts` + `src/integrations/supabase/client.ts`** — removes the `lovable-tagger` Vite plugin and uninstalls the package, and strips the Lovable-specific `VITE_SUPABASE_PUBLISHABLE_KEY` fallback from the Supabase client. Flagged as **Debt Item 7** in [`docs/DEBT_AND_RISK.md`](./DEBT_AND_RISK.md). This is **low-risk** because `vite.config.ts` is a build-tool file with zero runtime impact on application logic, and the Supabase client change removes a dead secondary fallback that nothing in the codebase currently calls. Core simulation, canvas, and erase-flow files are untouched.
 
-2. **The Verification Event:** The AI suggested initializing Supabase with **non-null assertions** on raw `import.meta.env` values, e.g. `createClient(import.meta.env.VITE_SUPABASE_URL!, anonKey!)`, which would compile but (a) crash or misconfigure silently in some edge cases and (b) force every import of the client module to assume env is always present—even though **no feature in the app imports `supabase` yet** and teammates often run the simulator without `.env`.
+2. **The Verification Event:** When prompted to "remove the Lovable dependency and clean up the config," Cursor collapsed the factory-function form of `defineConfig` down to a plain object, since `mode` was no longer used after removing `componentTagger()`:
 
-   - **AI-style suggestion (rejected):** `createClient<Database>(import.meta.env.VITE_SUPABASE_URL!, key!, { ... })`
-   - **Final implementation:** [`tryResolveSupabaseEnv()`](../src/integrations/supabase/client.ts) returns `ResolvedSupabaseEnv | null`; `export const supabase: SupabaseClient<Database> | null` is only created when both URL and key are non-empty strings; **`requireSupabaseEnv()`** throws a dedicated **`SupabaseConfigError`** with an actionable message when future persistence code must fail fast. This matches *our* context: optional backend today, strict boundary tomorrow.
+   *AI original suggestion (rejected):*
+   ```typescript
+   export default defineConfig({
+     server: { host: "::", port: 8080 },
+     plugins: [react()],
+     resolve: { alias: { "@": path.resolve(__dirname, "./src") } },
+   });
+   ```
 
-3. **Trust Boundary Established:** Requirement-linked constants now have a **single edit surface** (reducing risk that an AI or quick edit scrambles NFR1/FR4/Story 6 numbers in one file but not another). Supabase setup is **explicitly typed** (`ResolvedSupabaseEnv`, `SupabaseConfigError`, nullable client) so humans and reviewers can see when persistence is unset versus misconfigured. Together, this is a verifiable choke point before larger refactors (e.g. monolithic hook split in Debt Item 1).
+   *Final implementation (human override):*
+   ```typescript
+   // Factory form intentionally retained for future env-conditional plugins
+   export default defineConfig(() => ({
+     server: { host: "::", port: 8080 },
+     plugins: [react()],
+     resolve: { alias: { "@": path.resolve(__dirname, "./src") } },
+   }));
+   ```
 
-4. **Evidence of Execution:** Attached: [`docs/build-verification.log`](./build-verification.log) (clean `npm run build`, exit code 0). **Add your screenshot** of `npm run dev` showing countdown + erase still working after the change, or paste it into the PR thread.
+   The AI’s simplification is correct for the narrow task, but wrong for our project context. Our debt inventory (Part 2, Risk 3) explicitly frames this refactor as a *transition to a standard Vite setup*, and standard Vite docs recommend the factory form as the flexible default for any config that may need to condition plugins on `mode` or `command` (e.g., Sentry in production, Rollup visualizer in build-only mode). Collapsing to a plain object now forces a structural rewrite the next time a dev-only plugin is needed — adding noise to an unrelated future PR. The factory form is kept; the now-unused `mode` destructure is simply removed to keep the signature clean.
+
+3. **Trust Boundary Established:** Before this refactor the build toolchain had an invisible external dependency: `lovable-tagger` was injecting itself into the component tree at dev time via a Vite plugin, with no visibility into what it was doing. Any upstream Lovable change could silently alter dev-server behavior. The Supabase client also silently accepted either of two env-var names, meaning a misconfigured `.env` could produce a live client under one convention and `null` under another with no diagnostic. After this refactor: the build is pure `@vitejs/plugin-react-swc` + standard Vite (zero third-party hooks); the env contract is exactly one variable (`VITE_SUPABASE_ANON_KEY`); and `requireSupabaseEnv()` throws a typed `SupabaseConfigError` with an actionable message if misconfigured. TypeScript reports 0 errors; ESLint reports 0 errors or warnings on the changed files.
+
+4. **Evidence of Execution:** See [`docs/build-verification.log`](./build-verification.log).
+   ```
+   ✅ tsc --noEmit: 0 errors
+   ✅ eslint on changed files: 0 errors, 0 warnings
+   ✅ No lovable references remain in src/, vite.config.ts, or package.json
+   ✅ lovable-tagger removed from devDependencies
+   ```
+   All five acceptance criteria from Backlog Item 4 are satisfied (AC1–AC5 checked in the log).
 
 ---
 
@@ -32,16 +52,16 @@ Use the **Pull Request description** below verbatim (fill in bracketed links onl
 
 | File | Change |
 |------|--------|
-| `src/config/simulation.ts` | New — centralized constants + JSDoc / requirement IDs |
-| `src/hooks/useWhiteboardSimulation.ts` | Imports config; no behavior change |
-| `src/components/whiteboard/WhiteboardCanvas.tsx` | Imports canvas-related config; no behavior change |
-| `src/integrations/supabase/client.ts` | Typed env resolution, `SupabaseConfigError`, `supabase \| null` |
-| `src/index.css` | `@import` moved above `@tailwind` to satisfy CSS ordering (cleaner Vite build) |
+| `vite.config.ts` | Remove `lovable-tagger` import and `componentTagger()` plugin; retain factory form; add explanatory comment |
+| `src/integrations/supabase/client.ts` | Remove Lovable-specific `VITE_SUPABASE_PUBLISHABLE_KEY` fallback; use `?? ‘’` instead of `||` for null-safety |
+| `package.json` | Uninstall `lovable-tagger` from devDependencies |
+| `docs/build-verification.log` | Updated evidence log for this refactor |
 
 ---
 
 ## Before you submit
 
-1. Create a branch, commit, push, open PR against your default branch.
-2. Paste the **VIBE Report** block into the PR description; attach screenshot or link to CI if your course requires it.
-3. Optionally comment on the GitHub Issue that maps to Debt Item 5 / Item 3 with this PR link.
+1. Push branch `vibe/remove-lovable-tagger` and open a PR against `main`.
+2. Paste the **VIBE Report** block above into the PR description.
+3. Attach the `docs/build-verification.log` file or paste its contents into the PR thread as your evidence screenshot.
+4. Link this PR to the GitHub Issue for Backlog Item 4 (*Remove Lovable tooling*) with the `closes #N` keyword.
