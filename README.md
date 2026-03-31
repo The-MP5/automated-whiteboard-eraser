@@ -20,6 +20,7 @@ This repo is the **React simulation UI** used to validate logic, timing, and con
 |:---|:---|
 | **[Project reset & architecture baseline](./docs/PROJECT_RESET_REPORT.md)** | Lab 1 — system diagram, component map, backlog health |
 | **[Risk & technical debt inventory](./docs/DEBT_AND_RISK.md)** | Debt items, AI risks, acceptance criteria for GitHub issues |
+| **[Lab 4 agent sprint plan](./docs/LAB4_AGENT_SPRINT_PLAN.md)** | Raw agent output + human revisions + final scoped sprint plan |
 | **[Architecture diagram (SVG)](./docs/architecture-diagram.svg)** | Visual used in the project reset report |
 
 ---
