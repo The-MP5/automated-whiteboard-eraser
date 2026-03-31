@@ -30,4 +30,4 @@
 3. This RTM update is sprint-scoped and complements the broader project traceability artifacts from previous modules.
 
 ---
-Link to Sprint Execeution Document: `docs/LAB5_SPRINT_EXECUTION_SUMMARY.md`
+Link to Sprint Execeution Document: (https://github.com/The-MP5/automated-whiteboard-eraser/blob/main/docs/LAB5_SPRINT_EXECUTION_SUMMARY.md)
