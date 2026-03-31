@@ -16,7 +16,7 @@ This repo is the **React simulation UI** used to validate logic, timing, and con
 
 **Architecture, technical debt, and backlog-ready notes** live in [`docs/`](./docs/). Start here:
 
-| | |
+| Document | Description |
 |:---|:---|
 | **[Project reset & architecture baseline](./docs/PROJECT_RESET_REPORT.md)** | Lab 1 — system diagram, component map, backlog health |
 | **[Risk & technical debt inventory](./docs/DEBT_AND_RISK.md)** | Debt items, AI risks, acceptance criteria for GitHub issues |
