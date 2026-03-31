@@ -24,6 +24,7 @@ This repo is the **React simulation UI** used to validate logic, timing, and con
 | **[Lab 5 sprint execution summary](./docs/LAB5_SPRINT_EXECUTION_SUMMARY.md)** | Completed vs incomplete sprint items, AI usage, collaboration, and board hygiene evidence |
 | **[Lab 5 RTM update](./docs/RTM_LAB5_UPDATE.md)** | Requirement/debt traceability from board items to PR evidence and sprint status |
 | **[Architecture diagram (SVG)](./docs/architecture-diagram.svg)** | Visual used in the project reset report |
+| **[VIBE refactor (assignment)](./docs/VIBE_REFACTOR_ASSIGNMENT.md)** | Gatekeeper exercise: verification report + PR template |
 
 ---
 
