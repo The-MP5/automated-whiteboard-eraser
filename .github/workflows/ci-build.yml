@@ -1,0 +1,35 @@
+# NFR4 (Subissue 4.4): verify install + production build on declared Node LTS matrix.
+name: CI — build
+
+on:
+  push:
+    branches: [main, jibekgupta]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-build-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [20, 22]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+
+      - name: Install (npm ci)
+        run: npm ci
+
+      - name: Production build (NFR4)
+        run: npm run build

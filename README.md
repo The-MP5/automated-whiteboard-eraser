@@ -27,6 +27,7 @@ This repo is the **React simulation UI** used to validate logic, timing, and con
 | **[VIBE refactor (assignment)](./docs/VIBE_REFACTOR_ASSIGNMENT.md)** | Gatekeeper exercise: verification report + PR template |
 | **[Senior Project II — agent workflow](./docs/SENIOR_PROJECT_II_AGENT_WORKFLOW.md)** | Backlog → plan → implement pattern for AI-assisted work |
 | **[NFR4 — compatibility](./docs/NFR4_COMPATIBILITY.md)** | Browser / Node baseline (Subissue 4.4) |
+| **[NFR4 — UAT checklist](./docs/NFR4_UAT_CHECKLIST.md)** | Manual two-browser smoke (Subissue 4.4) |
 
 ---
 
@@ -59,7 +60,7 @@ This repo is the **React simulation UI** used to validate logic, timing, and con
 
 ### Prerequisites
 
-- **Node.js** (LTS) and **npm** (or yarn / bun)
+- **Node.js** **20.x or 22.x LTS** and **npm 10+** (see [`docs/NFR4_COMPATIBILITY.md`](./docs/NFR4_COMPATIBILITY.md) — **NFR4 / Subissue 4.4**)
 - **Supabase** project credentials if you enable persistence (see below)
 
 ### Install
@@ -101,6 +102,9 @@ The intended approach follows the course **Agile testing** model:
 | **HIL** | Simulated ROS / control flow |
 | **Integration** | UI → data layer → Supabase |
 | **UAT** | Manual checks on usability and safety flows |
+| **CI (NFR4)** | GitHub Actions **CI — build**: `npm ci` and `npm run build` on Node 20 and 22 ([`.github/workflows/ci-build.yml`](./.github/workflows/ci-build.yml)) |
+
+For Subissue **4.4**, complete the **[UAT checklist](./docs/NFR4_UAT_CHECKLIST.md)** (two browsers) before closing the issue.
 
 ---
 

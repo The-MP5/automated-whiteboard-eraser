@@ -18,12 +18,23 @@
 | [`vite.config.ts`](../vite.config.ts) | `build.target: 'es2020'` |
 | [`tsconfig.app.json`](../tsconfig.app.json) | `target` / `lib` ES2020 + DOM |
 
-## Verification (acceptance)
+## Verification (acceptance) — Subissue 4.4
 
-- [ ] `npm install` succeeds on Node LTS (see `engines`).
-- [ ] `npm run build` completes with exit code 0.
-- [ ] `npm run preview` — smoke test: canvas draws, countdown starts, obstacle toggle works in **at least two** of Chrome / Firefox / Safari / Edge.
-- [ ] No dependency on vendor-specific dev plugins for production (standard Vite + React).
+| Criterion | Status | How verified |
+|-----------|--------|----------------|
+| `npm install` / `npm ci` on Node LTS | Met | `package.json` `engines`; **GitHub Actions** `CI — build` on Node **20** and **22** (`.github/workflows/ci-build.yml`) |
+| `npm run build` exit 0 | Met | Same workflow runs `npm run build` on each Node version |
+| No vendor-only dev plugins in production bundle | Met | `vite.config.ts` uses only `react` plugin from `@vitejs/plugin-react-swc`; no Lovable or similar taggers |
+| **UAT** — smoke in ≥2 browsers | Manual | Team runs steps below and records evidence in PR or [`NFR4_UAT_CHECKLIST.md`](./NFR4_UAT_CHECKLIST.md) |
+
+### UAT steps (manual)
+
+1. `npm run build && npm run preview` (defaults to **http://localhost:4173** unless configured).
+2. In **browser A** and **browser B** (choose from Chrome, Firefox, Safari, Edge):
+   - Draw on canvas.
+   - **Start erase** → 10 s countdown appears; let it finish or cancel once.
+   - Toggle **simulate obstacle** during or before erase and confirm pause/resume behavior matches FR4.
+3. Note browser names + versions and date (screenshots optional).
 
 ## Out of scope (this subissue)
 
