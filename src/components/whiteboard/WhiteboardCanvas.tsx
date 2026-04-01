@@ -1,3 +1,8 @@
+/**
+ * FR1 — Digital Interface for Input (Subissue 7.1).
+ * Hosts the Fabric.js surface: pencil, selection, text, partial-erase rectangle,
+ * and snapshot/clear/undo. See docs/FR1_SUBISSUE_7_1.md for decomposition and acceptance tests.
+ */
 import { useEffect, useRef, useState, useCallback } from "react";
 import { Canvas as FabricCanvas, PencilBrush, Rect, FabricText } from "fabric";
 import { Button } from "@/components/ui/button";
@@ -260,6 +265,8 @@ const WhiteboardCanvas = ({
       <div 
         ref={containerRef}
         className="relative canvas-container"
+        role="application"
+        aria-label="Digital whiteboard: draw, select, or place text. Drag to select a partial erase region when partial mode is on."
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
@@ -310,7 +317,7 @@ const WhiteboardCanvas = ({
 
         {/* Board Dimensions Label */}
         <div className="absolute bottom-2 right-2 text-xs text-muted-foreground bg-card/80 px-2 py-1 rounded">
-          Simulated: 4ft × 6ft (NFR1)
+          Simulated board: 4ft × 6ft
         </div>
       </div>
     </div>

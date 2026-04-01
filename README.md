@@ -28,6 +28,7 @@ This repo is the **React simulation UI** used to validate logic, timing, and con
 | **[Senior Project II — agent workflow](./docs/SENIOR_PROJECT_II_AGENT_WORKFLOW.md)** | Backlog → plan → implement pattern for AI-assisted work |
 | **[NFR4 — compatibility](./docs/NFR4_COMPATIBILITY.md)** | Browser / Node baseline (Subissue 4.4) |
 | **[NFR4 — UAT checklist](./docs/NFR4_UAT_CHECKLIST.md)** | Manual two-browser smoke (Subissue 4.4) |
+| **[FR1 — Subissue 7.1 (workflow pack)](./docs/FR1_SUBISSUE_7_1.md)** | Digital interface for input: decomposition, traceability, acceptance tests |
 
 ---
 
@@ -35,6 +36,7 @@ This repo is the **React simulation UI** used to validate logic, timing, and con
 
 | Area | What the UI demonstrates |
 |------|---------------------------|
+| **Digital interface (FR1)** | Draw, select, and text input on Fabric canvas; toolbar, partial-area drag — see [`docs/FR1_SUBISSUE_7_1.md`](./docs/FR1_SUBISSUE_7_1.md) |
 | **Erase control (FR2)** | One-touch full erase and partial erase via Fabric.js canvas |
 | **Safety & pause (FR4, NFR3)** | Simulate obstacle — pauses when “object” is within 0.5 m |
 | **Performance (NFR1)** | Erase timed toward a **10 s** target for a standard board |

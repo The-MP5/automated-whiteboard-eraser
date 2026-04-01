@@ -72,7 +72,7 @@ const Index = () => {
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-semibold">Whiteboard Canvas</h2>
                 <span className="text-xs text-muted-foreground font-mono">
-                  FR1 / FR2: Digital Interface
+                  FR1: Input surface • FR2: Erase
                 </span>
               </div>
               <WhiteboardCanvas
@@ -87,8 +87,9 @@ const Index = () => {
             </div>
 
             {/* Requirements Info */}
-            <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-2">
+            <div className="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
               {[
+                { id: 'FR1', label: 'Digital Input' },
                 { id: 'FR4', label: 'Safety Sensors' },
                 { id: 'FR5', label: 'Teacher Controls' },
                 { id: 'NFR1', label: '10s Erase Time' },
