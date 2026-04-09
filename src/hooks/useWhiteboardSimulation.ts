@@ -19,6 +19,7 @@ import {
   proximityWhenClear,
   proximityWhenObstacleDetected,
   ARM_CONFIG,
+  MAX_ARM_TELEMETRY_SAMPLES,
   buildEraseWaypoints,
   buildExecutionPlan,
   sampleExecutionPlan,
@@ -55,8 +56,15 @@ export const useWhiteboardSimulation = () => {
   const fabricCanvasRef = useRef<FabricCanvas | null>(null);
   const eraseIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const progressRef = useRef<number>(0);
-  const elapsedBeforePauseRef = useRef<number>(0);
+  /** Wall-clock elapsed ms into the current execution plan (persists across pause / FR4 resume). */
+  const elapsedMsInPlanRef = useRef<number>(0);
   const executionPlanRef = useRef<ReturnType<typeof buildExecutionPlan> | null>(null);
+
+  const trimTelemetry = useCallback(
+    (prev: ArmRuntimeState["telemetry"], next: ArmRuntimeState["telemetry"][number]) =>
+      [...prev.slice(-(MAX_ARM_TELEMETRY_SAMPLES - 1)), next],
+    []
+  );
 
   const addLog = useCallback((type: SystemLog["type"], message: string) => {
     setLogs((prev) => [...prev, createSystemLog(type, message)].slice(-MAX_LOG_ENTRIES));
@@ -135,7 +143,7 @@ export const useWhiteboardSimulation = () => {
     setStatus("completed");
     setProgress(null);
     setPartialArea(null);
-    elapsedBeforePauseRef.current = 0;
+    elapsedMsInPlanRef.current = 0;
     addLog("success", "Erase operation completed successfully");
     toast.success("Whiteboard erased successfully!");
 
@@ -150,16 +158,16 @@ export const useWhiteboardSimulation = () => {
     const segmentStart = Date.now();
     if (!resume) {
       progressRef.current = 0;
-      elapsedBeforePauseRef.current = 0;
+      elapsedMsInPlanRef.current = 0;
     }
 
     const updateProgress = () => {
-      const elapsed = elapsedBeforePauseRef.current + (Date.now() - segmentStart);
+      const elapsedMs = elapsedMsInPlanRef.current + (Date.now() - segmentStart);
       const plan = executionPlanRef.current;
       if (!plan) return;
-      const tick = sampleExecutionPlan(plan, elapsed);
+      const tick = sampleExecutionPlan(plan, elapsedMs);
       progressRef.current = tick.percentage;
-      elapsedBeforePauseRef.current = tick.timeElapsed;
+      elapsedMsInPlanRef.current = elapsedMs;
 
       const safetyError = validateArmSafety(tick.target, tick.joints);
       if (safetyError) {
@@ -172,7 +180,7 @@ export const useWhiteboardSimulation = () => {
         setArmState((prev) => ({
           ...prev,
           lastError: safetyError,
-          telemetry: [...prev.telemetry.slice(-199), createTelemetryTick(tick, "error", safetyError)],
+          telemetry: trimTelemetry(prev.telemetry, createTelemetryTick(tick, "error", safetyError)),
         }));
         addLog("error", `FR3 safety stop: ${safetyError}`);
         toast.error(`Arm safety stop: ${safetyError}`);
@@ -188,7 +196,8 @@ export const useWhiteboardSimulation = () => {
         ...prev,
         pose: tick.target,
         joints: tick.joints,
-        telemetry: [...prev.telemetry.slice(-199), createTelemetryTick(tick, "ok", "Tracking trajectory")],
+        lastError: null,
+        telemetry: trimTelemetry(prev.telemetry, createTelemetryTick(tick, "ok", "Tracking trajectory")),
       }));
 
       if (tick.percentage >= 100) {
@@ -198,10 +207,10 @@ export const useWhiteboardSimulation = () => {
 
     eraseIntervalRef.current = setInterval(updateProgress, 100);
     addLog("info", "FR3 arm trajectory started");
-  }, [addLog, completeErase, eraseMode, partialArea]);
+  }, [addLog, completeErase, eraseMode, partialArea, trimTelemetry]);
 
   const startErase = useCallback(() => {
-    if (status !== "idle" && status !== "completed" && status !== "paused") return;
+    if (status !== "idle" && status !== "completed" && status !== "paused" && status !== "error") return;
 
     if (status === "paused") {
       setStatus("erasing");
@@ -261,7 +270,14 @@ export const useWhiteboardSimulation = () => {
     setProgress(null);
     setPartialArea(null);
     progressRef.current = 0;
-    elapsedBeforePauseRef.current = 0;
+    elapsedMsInPlanRef.current = 0;
+    setArmState((prev) => ({
+      ...prev,
+      pose: { ...ARM_CONFIG.homePose },
+      joints: { baseDeg: 0, shoulderDeg: 0, elbowDeg: 0 },
+      lastError: null,
+      telemetry: prev.telemetry,
+    }));
     addLog("warning", "Erase operation stopped by user");
     toast.warning("Operation stopped");
   }, [addLog]);

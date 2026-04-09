@@ -12,6 +12,7 @@ export { proximityWhenClear, proximityWhenObstacleDetected } from "./proximitySt
 export { createSnapshotNote, createSystemLog } from "./snapshotAndLog";
 export {
   ARM_CONFIG,
+  MAX_ARM_TELEMETRY_SAMPLES,
   buildEraseWaypoints,
   buildExecutionPlan,
   sampleExecutionPlan,

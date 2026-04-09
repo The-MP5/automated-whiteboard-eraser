@@ -40,6 +40,9 @@ export interface HilCheckResult {
   details: string;
 }
 
+/** Max telemetry entries kept in arm runtime state (bounded history). */
+export const MAX_ARM_TELEMETRY_SAMPLES = 200;
+
 export const ARM_CONFIG: ArmConfig = {
   boardWidthMm: 1800,
   boardHeightMm: 1200,
@@ -171,6 +174,9 @@ export function sampleExecutionPlan(plan: ArmExecutionPlan, elapsedMs: number): 
 }
 
 export function validateArmSafety(target: ArmPose, joints: ArmJointState, cfg: ArmConfig = ARM_CONFIG): string | null {
+  if (!inverseKinematics2D(target, cfg)) {
+    return "Unreachable arm pose (inverse kinematics failure).";
+  }
   if (!isPoseWithinWorkspace(target, cfg)) return "Target is outside workspace bounds.";
   if (joints.shoulderDeg < cfg.jointLimitsDeg.shoulder[0] || joints.shoulderDeg > cfg.jointLimitsDeg.shoulder[1]) {
     return "Shoulder joint limit violation.";
