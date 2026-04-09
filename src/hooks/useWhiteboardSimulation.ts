@@ -8,16 +8,23 @@ import type {
   SystemLog,
   ProximitySensor,
   EraseProgress,
+  ArmRuntimeState,
 } from "@/types/whiteboard";
 import { toast } from "sonner";
 import {
   COUNTDOWN_SECONDS,
   applyEraseToCanvas,
-  computeEraseProgressTick,
   createSnapshotNote,
   createSystemLog,
   proximityWhenClear,
   proximityWhenObstacleDetected,
+  ARM_CONFIG,
+  buildEraseWaypoints,
+  buildExecutionPlan,
+  sampleExecutionPlan,
+  validateArmSafety,
+  createTelemetryTick,
+  runHilChecks,
 } from "@/simulation";
 
 /**
@@ -33,10 +40,19 @@ export const useWhiteboardSimulation = () => {
   const [progress, setProgress] = useState<EraseProgress | null>(null);
   const [isObstacleSimulated, setIsObstacleSimulated] = useState(false);
   const [proximitySensor, setProximitySensor] = useState<ProximitySensor>(proximityWhenClear);
+  const [armState, setArmState] = useState<ArmRuntimeState>({
+    isCalibrated: false,
+    isHomed: false,
+    pose: { ...ARM_CONFIG.homePose },
+    joints: { baseDeg: 0, shoulderDeg: 0, elbowDeg: 0 },
+    telemetry: [],
+    lastError: null,
+  });
 
   const fabricCanvasRef = useRef<FabricCanvas | null>(null);
   const eraseIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const progressRef = useRef<number>(0);
+  const executionPlanRef = useRef<ReturnType<typeof buildExecutionPlan> | null>(null);
 
   const addLog = useCallback((type: SystemLog["type"], message: string) => {
     setLogs((prev) => [...prev, createSystemLog(type, message)]);
@@ -46,6 +62,14 @@ export const useWhiteboardSimulation = () => {
     (canvas: FabricCanvas) => {
       fabricCanvasRef.current = canvas;
       addLog("info", "Canvas initialized successfully");
+
+      const checks = runHilChecks();
+      checks.forEach((check) =>
+        addLog(
+          check.passed ? "success" : "error",
+          `${check.id}: ${check.details} (${check.passed ? "PASS" : "FAIL"})`
+        )
+      );
     },
     [addLog]
   );
@@ -110,18 +134,47 @@ export const useWhiteboardSimulation = () => {
   const simulateErase = useCallback(() => {
     if (!fabricCanvasRef.current) return;
 
+    const waypoints = buildEraseWaypoints(eraseMode, partialArea);
+    executionPlanRef.current = buildExecutionPlan(waypoints);
     const startTime = Date.now();
     progressRef.current = 0;
 
     const updateProgress = () => {
       const elapsed = Date.now() - startTime;
-      const tick = computeEraseProgressTick(elapsed);
+      const plan = executionPlanRef.current;
+      if (!plan) return;
+      const tick = sampleExecutionPlan(plan, elapsed);
       progressRef.current = tick.percentage;
+
+      const safetyError = validateArmSafety(tick.target, tick.joints);
+      if (safetyError) {
+        if (eraseIntervalRef.current) {
+          clearInterval(eraseIntervalRef.current);
+          eraseIntervalRef.current = null;
+        }
+        setStatus("error");
+        setProgress(null);
+        setArmState((prev) => ({
+          ...prev,
+          lastError: safetyError,
+          telemetry: [...prev.telemetry.slice(-199), createTelemetryTick(tick, "error", safetyError)],
+        }));
+        addLog("error", `FR3 safety stop: ${safetyError}`);
+        toast.error(`Arm safety stop: ${safetyError}`);
+        return;
+      }
 
       setProgress({
         ...tick,
         isPaused: false,
       });
+
+      setArmState((prev) => ({
+        ...prev,
+        pose: tick.target,
+        joints: tick.joints,
+        telemetry: [...prev.telemetry.slice(-199), createTelemetryTick(tick, "ok", "Tracking trajectory")],
+      }));
 
       if (tick.percentage >= 100) {
         completeErase();
@@ -129,8 +182,8 @@ export const useWhiteboardSimulation = () => {
     };
 
     eraseIntervalRef.current = setInterval(updateProgress, 100);
-    addLog("info", "Erase operation started (NFR1: 10s target)");
-  }, [addLog, completeErase]);
+    addLog("info", "FR3 arm trajectory started");
+  }, [addLog, completeErase, eraseMode, partialArea]);
 
   const startErase = useCallback(() => {
     if (status !== "idle" && status !== "completed" && status !== "paused") return;
@@ -141,6 +194,17 @@ export const useWhiteboardSimulation = () => {
       addLog("info", "Erase operation resumed");
       return;
     }
+
+    setArmState((prev) => ({
+      ...prev,
+      isCalibrated: true,
+      isHomed: true,
+      pose: { ...ARM_CONFIG.homePose },
+      joints: { baseDeg: 0, shoulderDeg: 0, elbowDeg: 0 },
+      lastError: null,
+      telemetry: prev.telemetry,
+    }));
+    addLog("info", "FR3 homing + calibration complete");
 
     saveSnapshot();
     setStatus("countdown");
@@ -238,5 +302,6 @@ export const useWhiteboardSimulation = () => {
     simulateObstacle,
     onCountdownComplete,
     onCountdownCancel,
+    armState,
   };
 };

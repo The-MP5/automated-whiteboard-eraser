@@ -1,13 +1,14 @@
-import { SystemStatus, EraseProgress, ProximitySensor } from "@/types/whiteboard";
+import { SystemStatus, EraseProgress, ProximitySensor, ArmRuntimeState } from "@/types/whiteboard";
 import { AlertTriangle, CheckCircle, Loader2, Pause, Radio, Shield } from "lucide-react";
 
 interface StatusDisplayProps {
   status: SystemStatus;
   progress: EraseProgress | null;
   proximitySensor: ProximitySensor;
+  armState: ArmRuntimeState;
 }
 
-const StatusDisplay = ({ status, progress, proximitySensor }: StatusDisplayProps) => {
+const StatusDisplay = ({ status, progress, proximitySensor, armState }: StatusDisplayProps) => {
   const getStatusConfig = () => {
     switch (status) {
       case 'idle':
@@ -125,6 +126,28 @@ const StatusDisplay = ({ status, progress, proximitySensor }: StatusDisplayProps
           <span className="text-xs font-mono text-muted-foreground w-14 text-right">
             {proximitySensor.distance.toFixed(2)}m
           </span>
+        </div>
+      </div>
+
+      {/* FR3 Robotic Arm State */}
+      <div className="pt-2 border-t border-border space-y-2">
+        <div className="flex items-center justify-between text-sm">
+          <span className="text-muted-foreground">Arm State</span>
+          <span className={`font-mono text-xs ${armState.lastError ? "text-danger" : "text-success"}`}>
+            {armState.lastError ? "FAULT" : "READY"}
+          </span>
+        </div>
+        <div className="text-xs text-muted-foreground font-mono">
+          Pose: ({Math.round(armState.pose.x)}, {Math.round(armState.pose.y)}) mm
+        </div>
+        <div className="text-xs text-muted-foreground font-mono">
+          Joints: B {armState.joints.baseDeg.toFixed(1)}° / S {armState.joints.shoulderDeg.toFixed(1)}° / E {armState.joints.elbowDeg.toFixed(1)}°
+        </div>
+        <div className="text-xs text-muted-foreground">
+          Calibration: {armState.isCalibrated ? "complete" : "pending"} · Home: {armState.isHomed ? "set" : "not set"}
+        </div>
+        <div className="text-xs text-muted-foreground">
+          Telemetry points: {armState.telemetry.length}
         </div>
       </div>
     </div>

@@ -16,6 +16,7 @@ const Index = () => {
     progress,
     proximitySensor,
     isObstacleSimulated,
+    armState,
     countdownSeconds,
     setCanvas,
     setEraseMode,
@@ -63,6 +64,7 @@ const Index = () => {
               status={status}
               progress={progress}
               proximitySensor={proximitySensor}
+              armState={armState}
             />
           </aside>
 

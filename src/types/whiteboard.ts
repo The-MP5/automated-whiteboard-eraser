@@ -42,3 +42,33 @@ export interface EraseProgress {
   timeRemaining: number;
   isPaused: boolean;
 }
+
+export interface ArmPose {
+  x: number;
+  y: number;
+}
+
+export interface ArmJointState {
+  baseDeg: number;
+  shoulderDeg: number;
+  elbowDeg: number;
+}
+
+export interface ArmTelemetry {
+  timestamp: Date;
+  target: ArmPose;
+  actual: ArmPose;
+  joints: ArmJointState;
+  speedMmPerSec: number;
+  status: "ok" | "warning" | "error";
+  message: string;
+}
+
+export interface ArmRuntimeState {
+  isCalibrated: boolean;
+  isHomed: boolean;
+  pose: ArmPose;
+  joints: ArmJointState;
+  telemetry: ArmTelemetry[];
+  lastError: string | null;
+}

@@ -10,3 +10,14 @@ export { computeEraseProgressTick } from "./eraseProgress";
 export type { EraseProgressTick } from "./eraseProgress";
 export { proximityWhenClear, proximityWhenObstacleDetected } from "./proximityState";
 export { createSnapshotNote, createSystemLog } from "./snapshotAndLog";
+export {
+  ARM_CONFIG,
+  buildEraseWaypoints,
+  buildExecutionPlan,
+  sampleExecutionPlan,
+  inverseKinematics2D,
+  validateArmSafety,
+  createTelemetryTick,
+  runHilChecks,
+} from "./armControl";
+export type { ArmExecutionPlan, ArmExecutionTick, HilCheckResult } from "./armControl";
