@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { Canvas as FabricCanvas } from "fabric";
 import type {
   SystemStatus,
@@ -27,6 +27,9 @@ import {
   runHilChecks,
 } from "@/simulation";
 
+const MAX_LOG_ENTRIES = 500;
+const MAX_SAVED_NOTES = 100;
+
 /**
  * React bridge for the whiteboard simulation: holds UI state and wires Fabric + toasts.
  * Domain rules live under `@/simulation` (testable, SRP).
@@ -52,10 +55,11 @@ export const useWhiteboardSimulation = () => {
   const fabricCanvasRef = useRef<FabricCanvas | null>(null);
   const eraseIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const progressRef = useRef<number>(0);
+  const elapsedBeforePauseRef = useRef<number>(0);
   const executionPlanRef = useRef<ReturnType<typeof buildExecutionPlan> | null>(null);
 
   const addLog = useCallback((type: SystemLog["type"], message: string) => {
-    setLogs((prev) => [...prev, createSystemLog(type, message)]);
+    setLogs((prev) => [...prev, createSystemLog(type, message)].slice(-MAX_LOG_ENTRIES));
   }, []);
 
   const setCanvas = useCallback(
@@ -80,16 +84,22 @@ export const useWhiteboardSimulation = () => {
       return;
     }
 
-    const dataUrl = fabricCanvasRef.current.toDataURL({
-      format: "png",
-      quality: 1,
-      multiplier: 1,
-    });
+    try {
+      const dataUrl = fabricCanvasRef.current.toDataURL({
+        format: "png",
+        quality: 1,
+        multiplier: 1,
+      });
 
-    const note = createSnapshotNote(dataUrl);
-    setNotes((prev) => [...prev, note]);
-    addLog("success", `Snapshot saved: ${note.name}`);
-    toast.success("Snapshot saved to Notes");
+      const note = createSnapshotNote(dataUrl);
+      setNotes((prev) => [...prev, note].slice(-MAX_SAVED_NOTES));
+      addLog("success", `Snapshot saved: ${note.name}`);
+      toast.success("Snapshot saved to Notes");
+    } catch (error) {
+      addLog("error", "Failed to save snapshot");
+      toast.error("Snapshot failed. Please try again.");
+      console.error("Snapshot save failed", error);
+    }
   }, [addLog]);
 
   const deleteNote = useCallback(
@@ -125,26 +135,31 @@ export const useWhiteboardSimulation = () => {
     setStatus("completed");
     setProgress(null);
     setPartialArea(null);
+    elapsedBeforePauseRef.current = 0;
     addLog("success", "Erase operation completed successfully");
     toast.success("Whiteboard erased successfully!");
 
     setTimeout(() => setStatus("idle"), 2000);
   }, [eraseMode, partialArea, addLog]);
 
-  const simulateErase = useCallback(() => {
+  const simulateErase = useCallback((resume = false) => {
     if (!fabricCanvasRef.current) return;
 
     const waypoints = buildEraseWaypoints(eraseMode, partialArea);
     executionPlanRef.current = buildExecutionPlan(waypoints);
-    const startTime = Date.now();
-    progressRef.current = 0;
+    const segmentStart = Date.now();
+    if (!resume) {
+      progressRef.current = 0;
+      elapsedBeforePauseRef.current = 0;
+    }
 
     const updateProgress = () => {
-      const elapsed = Date.now() - startTime;
+      const elapsed = elapsedBeforePauseRef.current + (Date.now() - segmentStart);
       const plan = executionPlanRef.current;
       if (!plan) return;
       const tick = sampleExecutionPlan(plan, elapsed);
       progressRef.current = tick.percentage;
+      elapsedBeforePauseRef.current = tick.timeElapsed;
 
       const safetyError = validateArmSafety(tick.target, tick.joints);
       if (safetyError) {
@@ -190,7 +205,7 @@ export const useWhiteboardSimulation = () => {
 
     if (status === "paused") {
       setStatus("erasing");
-      simulateErase();
+      simulateErase(true);
       addLog("info", "Erase operation resumed");
       return;
     }
@@ -246,6 +261,7 @@ export const useWhiteboardSimulation = () => {
     setProgress(null);
     setPartialArea(null);
     progressRef.current = 0;
+    elapsedBeforePauseRef.current = 0;
     addLog("warning", "Erase operation stopped by user");
     toast.warning("Operation stopped");
   }, [addLog]);
@@ -272,12 +288,21 @@ export const useWhiteboardSimulation = () => {
 
       if (status === "obstacle-detected") {
         setStatus("erasing");
-        simulateErase();
+        simulateErase(true);
         addLog("success", "FR4: Area clear - operation resumed");
         toast.success("Area clear. Resuming operation.");
       }
     }
   }, [isObstacleSimulated, status, addLog, simulateErase]);
+
+  useEffect(() => {
+    return () => {
+      if (eraseIntervalRef.current) {
+        clearInterval(eraseIntervalRef.current);
+        eraseIntervalRef.current = null;
+      }
+    };
+  }, []);
 
   return {
     status,
