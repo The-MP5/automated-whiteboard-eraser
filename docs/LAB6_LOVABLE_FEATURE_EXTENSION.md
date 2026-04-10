@@ -54,7 +54,7 @@ Lovable also produced a **stub `Index`** used only inside Lovable for preview. T
 
 **Branch:** `vikashrivers` → PR into `main`.
 
-**Sub-task decomposition (traceability):** [#136](https://github.com/The-MP5/automated-whiteboard-eraser/issues/136)–[#140](https://github.com/The-MP5/automated-whiteboard-eraser/issues/140) under [#58](https://github.com/The-MP5/automated-whiteboard-eraser/issues/58).
+**Sub-task decomposition:** [#136](https://github.com/The-MP5/automated-whiteboard-eraser/issues/136)–[#140](https://github.com/The-MP5/automated-whiteboard-eraser/issues/140) under [#58](https://github.com/The-MP5/automated-whiteboard-eraser/issues/58).
 
 ---
 
@@ -99,17 +99,3 @@ No intentional changes to **countdown duration**, **10 s erase target**, or **0.
 - UI remains **component-level** (`ControlPanel`, `StatusDisplay`) with **typed props**; no new global singletons.
 - **Command audit** and guards live in the hook next to existing state transitions; **system logs** still use **`createSystemLog`** from `@/simulation`.
 - **TypeScript** strictness preserved; Radix **Progress** reused from existing `components/ui` stack.
-
----
-
-### 7. Team review
-
-Group members can review this PR before the **Lab 6 PDF** submission; checklist above maps directly to course expectations for **targeted generation**, **clean integration**, **Before/After documentation**, and **verification**.
-
----
-
-### Quick links
-
-- Parent backlog: [#58](https://github.com/The-MP5/automated-whiteboard-eraser/issues/58)
-- Sub-issues: [#136](https://github.com/The-MP5/automated-whiteboard-eraser/issues/136) [#137](https://github.com/The-MP5/automated-whiteboard-eraser/issues/137) [#138](https://github.com/The-MP5/automated-whiteboard-eraser/issues/138) [#139](https://github.com/The-MP5/automated-whiteboard-eraser/issues/139) [#140](https://github.com/The-MP5/automated-whiteboard-eraser/issues/140)
-- Related story context: F2 / partial erase parent issue as linked from project board

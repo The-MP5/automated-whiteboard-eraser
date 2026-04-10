@@ -23,6 +23,7 @@ This repo is the **React simulation UI** used to validate logic, timing, and con
 | **[Lab 4 agent sprint plan](./docs/LAB4_AGENT_SPRINT_PLAN.md)** | Raw agent output + human revisions + final scoped sprint plan |
 | **[Lab 5 sprint execution summary](./docs/LAB5_SPRINT_EXECUTION_SUMMARY.md)** | Completed vs incomplete sprint items, AI usage, collaboration, and board hygiene evidence |
 | **[Lab 5 RTM update](./docs/RTM_LAB5_UPDATE.md)** | Requirement/debt traceability from board items to PR evidence and sprint status |
+| **[Lab 6 Lovable feature extension](./docs/LAB6_LOVABLE_FEATURE_EXTENSION.md)** | Lab 6 — Lovable.dev sync: PR copy, Before/After, verification (Subissue 2.3 / FR5) |
 | **[Architecture diagram (SVG)](./docs/architecture-diagram.svg)** | Visual used in the project reset report |
 
 ---
