@@ -8,6 +8,8 @@ import type {
   SystemLog,
   ProximitySensor,
   EraseProgress,
+  CommandAction,
+  CommandAudit,
 } from "@/types/whiteboard";
 import { toast } from "sonner";
 import {
@@ -32,11 +34,24 @@ export const useWhiteboardSimulation = () => {
   const [logs, setLogs] = useState<SystemLog[]>([]);
   const [progress, setProgress] = useState<EraseProgress | null>(null);
   const [isObstacleSimulated, setIsObstacleSimulated] = useState(false);
+  const [commandAudit, setCommandAudit] = useState<CommandAudit>({
+    lastCommand: null,
+    lastCommandAt: null,
+    rejectedCommandReason: null,
+  });
   const [proximitySensor, setProximitySensor] = useState<ProximitySensor>(proximityWhenClear);
 
   const fabricCanvasRef = useRef<FabricCanvas | null>(null);
   const eraseIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const progressRef = useRef<number>(0);
+
+  const auditCommand = useCallback((action: CommandAction, allowed: boolean, reason?: string) => {
+    setCommandAudit({
+      lastCommand: action,
+      lastCommandAt: new Date(),
+      rejectedCommandReason: allowed ? null : reason ?? "Command rejected by control state",
+    });
+  }, []);
 
   const addLog = useCallback((type: SystemLog["type"], message: string) => {
     setLogs((prev) => [...prev, createSystemLog(type, message)]);
@@ -133,7 +148,14 @@ export const useWhiteboardSimulation = () => {
   }, [addLog, completeErase]);
 
   const startErase = useCallback(() => {
-    if (status !== "idle" && status !== "completed" && status !== "paused") return;
+    if (status !== "idle" && status !== "completed" && status !== "paused") {
+      const reason = `Start is unavailable while status is '${status}'`;
+      auditCommand("start", false, reason);
+      addLog("warning", `FR2: ${reason}`);
+      toast.info("Start unavailable in current state");
+      return;
+    }
+    auditCommand("start", true);
 
     if (status === "paused") {
       setStatus("erasing");
@@ -145,7 +167,7 @@ export const useWhiteboardSimulation = () => {
     saveSnapshot();
     setStatus("countdown");
     addLog("info", "Countdown started (10 seconds warning)");
-  }, [status, saveSnapshot, simulateErase, addLog]);
+  }, [status, saveSnapshot, simulateErase, addLog, auditCommand]);
 
   const onCountdownComplete = useCallback(() => {
     setStatus("erasing");
@@ -159,7 +181,14 @@ export const useWhiteboardSimulation = () => {
   }, [addLog]);
 
   const pauseErase = useCallback(() => {
-    if (status !== "erasing") return;
+    if (status !== "erasing") {
+      const reason = `Pause is unavailable while status is '${status}'`;
+      auditCommand("pause", false, reason);
+      addLog("warning", `FR2: ${reason}`);
+      toast.info("Pause unavailable in current state");
+      return;
+    }
+    auditCommand("pause", true);
 
     if (eraseIntervalRef.current) {
       clearInterval(eraseIntervalRef.current);
@@ -170,9 +199,23 @@ export const useWhiteboardSimulation = () => {
     setProgress((prev) => (prev ? { ...prev, isPaused: true } : null));
     addLog("warning", "Erase operation paused by user");
     toast.warning("Operation paused");
-  }, [status, addLog]);
+  }, [status, addLog, auditCommand]);
 
   const stopErase = useCallback(() => {
+    const canStop =
+      status === "erasing" ||
+      status === "countdown" ||
+      status === "paused" ||
+      status === "obstacle-detected";
+    if (!canStop) {
+      const reason = `Stop is unavailable while status is '${status}'`;
+      auditCommand("stop", false, reason);
+      addLog("warning", `FR2: ${reason}`);
+      toast.info("Stop unavailable in current state");
+      return;
+    }
+    auditCommand("stop", true);
+
     if (eraseIntervalRef.current) {
       clearInterval(eraseIntervalRef.current);
       eraseIntervalRef.current = null;
@@ -184,7 +227,7 @@ export const useWhiteboardSimulation = () => {
     progressRef.current = 0;
     addLog("warning", "Erase operation stopped by user");
     toast.warning("Operation stopped");
-  }, [addLog]);
+  }, [status, addLog, auditCommand]);
 
   const simulateObstacle = useCallback(() => {
     const newObstacleState = !isObstacleSimulated;
@@ -224,6 +267,7 @@ export const useWhiteboardSimulation = () => {
     progress,
     proximitySensor,
     isObstacleSimulated,
+    commandAudit,
     countdownSeconds: COUNTDOWN_SECONDS,
 
     setCanvas,

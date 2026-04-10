@@ -42,3 +42,11 @@ export interface EraseProgress {
   timeRemaining: number;
   isPaused: boolean;
 }
+
+export type CommandAction = 'start' | 'pause' | 'stop';
+
+export interface CommandAudit {
+  lastCommand: CommandAction | null;
+  lastCommandAt: Date | null;
+  rejectedCommandReason: string | null;
+}
