@@ -84,9 +84,16 @@ End-to-end application of this workflow for **digital interface / input** is doc
 
 ---
 
+## Worked example (Subissue 6.2 — FR5 Teacher Interface Controls)
+
+Teacher-facing state controls (Start/Resume/Pause/Stop, mode locking during active operation, and safety simulation controls) are documented in **[`FR5_SUBISSUE_6_2.md`](./FR5_SUBISSUE_6_2.md)** with manual verification in **[`FR5_TEACHER_CONTROLS_UAT_CHECKLIST.md`](./FR5_TEACHER_CONTROLS_UAT_CHECKLIST.md)**.
+
+---
+
 ## Related project docs
 
 - **NFR1 Usability (Subissue 2.4):** [`NFR1_SUBISSUE_2_4.md`](./NFR1_SUBISSUE_2_4.md)
+- **FR5 Teacher Controls (Subissue 6.2):** [`FR5_SUBISSUE_6_2.md`](./FR5_SUBISSUE_6_2.md)
 - **FR1 (Subissue 7.1):** [`FR1_SUBISSUE_7_1.md`](./FR1_SUBISSUE_7_1.md)
 - Risk & debt: [`DEBT_AND_RISK.md`](./DEBT_AND_RISK.md)
 - VIBE gatekeeper example: [`VIBE_REFACTOR_ASSIGNMENT.md`](./VIBE_REFACTOR_ASSIGNMENT.md)

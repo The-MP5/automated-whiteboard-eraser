@@ -80,6 +80,9 @@ const StatusDisplay = ({ status, progress, proximitySensor }: StatusDisplayProps
         <Icon className={`h-4 w-4 ${status === 'erasing' ? 'animate-spin' : ''}`} />
         <span>{config.label}</span>
       </div>
+      <p className="text-xs text-muted-foreground">
+        FR5: Teacher controls remain state-aware for safer operation.
+      </p>
 
       {/* Progress Display */}
       {progress && (status === 'erasing' || status === 'paused' || status === 'obstacle-detected') && (
@@ -138,6 +141,9 @@ const StatusDisplay = ({ status, progress, proximitySensor }: StatusDisplayProps
             {proximitySensor.distance.toFixed(2)}m
           </span>
         </div>
+        <p className="text-xs text-muted-foreground mt-2">
+          Teachers can use obstacle simulation to validate safety pause behavior.
+        </p>
       </div>
     </div>
   );

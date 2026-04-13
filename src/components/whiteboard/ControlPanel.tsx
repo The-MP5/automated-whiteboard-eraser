@@ -36,6 +36,13 @@ const ControlPanel = ({
   const canPause = status === 'erasing';
   const canResume = status === 'paused';
   const canStop = isOperating;
+  const teacherActionHint = canResume
+    ? "Press Resume to continue the interrupted erase cycle."
+    : canStart
+      ? "Press Start Erase to begin a 10 second warning before motion."
+      : canPause
+        ? "Erase is running. You can Pause or Stop."
+        : "Wait for the active operation to finish before starting again.";
 
   return (
     <div className="control-panel space-y-6">
@@ -66,6 +73,11 @@ const ControlPanel = ({
             <span className="text-xs">Partial</span>
           </Button>
         </div>
+        {isOperating && (
+          <p className="text-xs text-muted-foreground">
+            FR5: Mode controls are locked while an operation is active.
+          </p>
+        )}
       </div>
 
       {/* Main Controls */}
@@ -116,6 +128,7 @@ const ControlPanel = ({
               Stop
             </Button>
           </div>
+          <p className="text-xs text-muted-foreground">{teacherActionHint}</p>
         </div>
       </div>
 
@@ -130,12 +143,18 @@ const ControlPanel = ({
           size="default"
           className="w-full"
           onClick={onSimulateObstacle}
+          aria-pressed={isObstacleSimulated}
+          aria-label={
+            isObstacleSimulated
+              ? 'Remove simulated obstacle'
+              : 'Simulate obstacle to test safety pause behavior'
+          }
         >
           <AlertTriangle className="h-4 w-4" />
           {isObstacleSimulated ? 'Remove Obstacle' : 'Simulate Obstacle'}
         </Button>
         <p className="text-xs text-muted-foreground">
-          FR4: System pauses when obstacle is within 0.5m
+          FR4 + FR5: Teacher safety control pauses erase when obstacle is within 0.5m.
         </p>
       </div>
 
