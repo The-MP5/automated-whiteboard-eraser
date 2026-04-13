@@ -78,8 +78,15 @@ End-to-end application of this workflow for **digital interface / input** is doc
 
 ---
 
+## Worked example (Subissue 2.4 — NFR1 Usability)
+
+**Erase experience usability** (status, countdown, controls, assistive cues) is documented in **[`NFR1_SUBISSUE_2_4.md`](./NFR1_SUBISSUE_2_4.md)** with manual verification in **[`NFR1_USABILITY_UAT_CHECKLIST.md`](./NFR1_USABILITY_UAT_CHECKLIST.md)**.
+
+---
+
 ## Related project docs
 
+- **NFR1 Usability (Subissue 2.4):** [`NFR1_SUBISSUE_2_4.md`](./NFR1_SUBISSUE_2_4.md)
 - **FR1 (Subissue 7.1):** [`FR1_SUBISSUE_7_1.md`](./FR1_SUBISSUE_7_1.md)
 - Risk & debt: [`DEBT_AND_RISK.md`](./DEBT_AND_RISK.md)
 - VIBE gatekeeper example: [`VIBE_REFACTOR_ASSIGNMENT.md`](./VIBE_REFACTOR_ASSIGNMENT.md)

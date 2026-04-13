@@ -70,8 +70,13 @@ const StatusDisplay = ({ status, progress, proximitySensor }: StatusDisplayProps
         System Status
       </h3>
 
-      {/* Main Status */}
-      <div className={`${config.className} justify-center`}>
+      {/* Main Status — NFR1 usability: visible phase (Subissue 2.4) */}
+      <div
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        className={`${config.className} justify-center`}
+      >
         <Icon className={`h-4 w-4 ${status === 'erasing' ? 'animate-spin' : ''}`} />
         <span>{config.label}</span>
       </div>
@@ -83,7 +88,14 @@ const StatusDisplay = ({ status, progress, proximitySensor }: StatusDisplayProps
             <span className="text-muted-foreground">Progress</span>
             <span className="font-mono text-primary">{Math.round(progress.percentage)}%</span>
           </div>
-          <div className="h-2 bg-secondary rounded-full overflow-hidden">
+          <div
+            className="h-2 bg-secondary rounded-full overflow-hidden"
+            role="progressbar"
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={Math.round(progress.percentage)}
+            aria-label={`Erase progress, ${Math.round(progress.percentage)} percent`}
+          >
             <div 
               className="h-full bg-primary transition-all duration-300 ease-out"
               style={{ width: `${progress.percentage}%` }}

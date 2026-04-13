@@ -81,8 +81,13 @@ const ControlPanel = ({
             className="w-full"
             onClick={onStart}
             disabled={!canStart && !canResume}
+            aria-label={
+              canResume
+                ? 'Resume erase operation'
+                : 'Start erase. A ten second countdown will run before the board is erased.'
+            }
           >
-            <Play className="h-5 w-5" />
+            <Play className="h-5 w-5" aria-hidden />
             {canResume ? 'Resume' : 'Start Erase'}
           </Button>
 
@@ -93,8 +98,9 @@ const ControlPanel = ({
               size="lg"
               onClick={onPause}
               disabled={!canPause}
+              aria-label="Pause erase"
             >
-              <Pause className="h-5 w-5" />
+              <Pause className="h-5 w-5" aria-hidden />
               Pause
             </Button>
 
@@ -104,8 +110,9 @@ const ControlPanel = ({
               size="lg"
               onClick={onStop}
               disabled={!canStop}
+              aria-label="Stop erase operation"
             >
-              <Square className="h-5 w-5" />
+              <Square className="h-5 w-5" aria-hidden />
               Stop
             </Button>
           </div>

@@ -43,17 +43,22 @@ const CountdownOverlay = ({
   if (!isActive) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/90 backdrop-blur-sm animate-fade-in">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-background/90 backdrop-blur-sm animate-fade-in"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="countdown-erase-title"
+    >
       <div className="text-center space-y-8">
         {/* Warning Icon */}
         <div className="flex items-center justify-center gap-3 text-warning animate-pulse-glow">
-          <AlertTriangle className="h-8 w-8" />
-          <Volume2 className="h-8 w-8" />
+          <AlertTriangle className="h-8 w-8" aria-hidden />
+          <Volume2 className="h-8 w-8" aria-hidden />
         </div>
 
         {/* Main Message */}
         <div className="space-y-2">
-          <h2 className="text-2xl font-bold text-foreground uppercase tracking-wide">
+          <h2 id="countdown-erase-title" className="text-2xl font-bold text-foreground uppercase tracking-wide">
             Erase Operation Starting
           </h2>
           <p className="text-lg text-muted-foreground">
@@ -63,9 +68,13 @@ const CountdownOverlay = ({
 
         {/* Countdown Number */}
         <div className="relative">
+          <p className="sr-only" aria-live="assertive" aria-atomic="true">
+            {currentSeconds} seconds remaining before erase begins. Cancel now to stop.
+          </p>
           <div 
             className="text-[180px] font-bold font-mono text-primary leading-none animate-countdown"
             style={{ textShadow: '0 0 60px hsl(185 75% 50% / 0.6)' }}
+            aria-hidden
           >
             {currentSeconds}
           </div>
@@ -98,6 +107,7 @@ const CountdownOverlay = ({
 
         {/* Cancel Button */}
         <button
+          type="button"
           onClick={onCancel}
           className="px-8 py-3 bg-danger text-danger-foreground font-bold uppercase tracking-wider rounded-lg shadow-glow-danger hover:bg-danger/90 transition-all active:scale-95"
         >

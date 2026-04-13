@@ -29,6 +29,8 @@ This repo is the **React simulation UI** used to validate logic, timing, and con
 | **[NFR4 — compatibility](./docs/NFR4_COMPATIBILITY.md)** | Browser / Node baseline (Subissue 4.4) |
 | **[NFR4 — UAT checklist](./docs/NFR4_UAT_CHECKLIST.md)** | Manual two-browser smoke (Subissue 4.4) |
 | **[FR1 — Subissue 7.1 (workflow pack)](./docs/FR1_SUBISSUE_7_1.md)** | Digital interface for input: decomposition, traceability, acceptance tests |
+| **[NFR1 — Subissue 2.4 (usability)](./docs/NFR1_SUBISSUE_2_4.md)** | Erase UX: status, progress, countdown, controls, traceability |
+| **[NFR1 — usability UAT](./docs/NFR1_USABILITY_UAT_CHECKLIST.md)** | Manual checklist for Subissue 2.4 |
 
 ---
 
@@ -39,7 +41,7 @@ This repo is the **React simulation UI** used to validate logic, timing, and con
 | **Digital interface (FR1)** | Draw, select, and text input on Fabric canvas; toolbar, partial-area drag — see [`docs/FR1_SUBISSUE_7_1.md`](./docs/FR1_SUBISSUE_7_1.md) |
 | **Erase control (FR2)** | One-touch full erase and partial erase via Fabric.js canvas |
 | **Safety & pause (FR4, NFR3)** | Simulate obstacle — pauses when “object” is within 0.5 m |
-| **Performance (NFR1)** | Erase timed toward a **10 s** target for a standard board |
+| **Performance & usability (NFR1)** | **10 s** erase target; clear **status**, **progress**, **countdown**, **pause/stop** — see [`docs/NFR1_SUBISSUE_2_4.md`](./docs/NFR1_SUBISSUE_2_4.md) |
 | **Digital archiving (Story 7)** | Snapshot canvas state (persistence design in docs; see debt notes) |
 | **Accessibility alert (Story 6)** | **10 s** countdown before erase starts |
 | **Compatibility (NFR4)** | Runs on **last 2** major Chrome / Edge / Firefox / Safari; **Node 20–22 LTS** for dev/build — see [`docs/NFR4_COMPATIBILITY.md`](./docs/NFR4_COMPATIBILITY.md) |
@@ -107,6 +109,8 @@ The intended approach follows the course **Agile testing** model:
 | **CI (NFR4)** | GitHub Actions **CI — build**: `npm ci` and `npm run build` on Node 20 and 22 ([`.github/workflows/ci-build.yml`](./.github/workflows/ci-build.yml)) |
 
 For Subissue **4.4**, complete the **[UAT checklist](./docs/NFR4_UAT_CHECKLIST.md)** (two browsers) before closing the issue.
+
+For Subissue **2.4 (NFR1 usability)**, complete the **[usability UAT checklist](./docs/NFR1_USABILITY_UAT_CHECKLIST.md)** before closing the issue.
 
 ---
 
