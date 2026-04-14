@@ -43,6 +43,24 @@ const ControlPanel = ({
       : canPause
         ? "Erase is running. You can Pause or Stop."
         : "Wait for the active operation to finish before starting again.";
+  const teacherStateLabel = (() => {
+    switch (status) {
+      case "idle":
+        return "Ready";
+      case "countdown":
+        return "Warning Countdown";
+      case "erasing":
+        return "Erasing";
+      case "paused":
+        return "Paused";
+      case "obstacle-detected":
+        return "Safety Pause";
+      case "completed":
+        return "Completed";
+      default:
+        return "Unknown";
+    }
+  })();
 
   return (
     <div className="control-panel space-y-6">
@@ -129,6 +147,9 @@ const ControlPanel = ({
             </Button>
           </div>
           <p className="text-xs text-muted-foreground">{teacherActionHint}</p>
+          <p className="text-xs text-muted-foreground">
+            Current state: <span className="font-mono">{teacherStateLabel}</span>
+          </p>
         </div>
       </div>
 

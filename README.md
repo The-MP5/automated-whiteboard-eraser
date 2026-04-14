@@ -34,6 +34,8 @@ This repo is the **React simulation UI** used to validate logic, timing, and con
 | **[NFR1 — usability UAT](./docs/NFR1_USABILITY_UAT_CHECKLIST.md)** | Manual checklist for Subissue 2.4 |
 | **[FR5 — Subissue 6.2 (teacher controls)](./docs/FR5_SUBISSUE_6_2.md)** | Teacher control state model, guidance, and acceptance checks |
 | **[FR5 — teacher controls UAT](./docs/FR5_TEACHER_CONTROLS_UAT_CHECKLIST.md)** | Manual checklist for Subissue 6.2 |
+| **[FR5 — Subissue 8.2 (teacher controls follow-up)](./docs/FR5_SUBISSUE_8_2.md)** | Additional teacher-control refinement and traceability |
+| **[FR5 — Subissue 8.2 UAT](./docs/FR5_SUBISSUE_8_2_UAT_CHECKLIST.md)** | Manual checklist for Subissue 8.2 |
 
 ---
 
@@ -117,6 +119,8 @@ For Subissue **4.4**, complete the **[UAT checklist](./docs/NFR4_UAT_CHECKLIST.m
 For Subissue **2.4 (NFR1 usability)**, complete the **[usability UAT checklist](./docs/NFR1_USABILITY_UAT_CHECKLIST.md)** before closing the issue.
 
 For Subissue **6.2 (FR5 teacher controls)**, complete the **[teacher controls UAT checklist](./docs/FR5_TEACHER_CONTROLS_UAT_CHECKLIST.md)** before closing the issue.
+
+For Subissue **8.2 (FR5 teacher controls follow-up)**, complete the **[FR5 8.2 UAT checklist](./docs/FR5_SUBISSUE_8_2_UAT_CHECKLIST.md)** before closing the issue.
 
 For Subissue **7.1 (FR1 digital input)**, complete the **[digital input UAT checklist](./docs/FR1_DIGITAL_INPUT_UAT_CHECKLIST.md)** before closing the issue.
 

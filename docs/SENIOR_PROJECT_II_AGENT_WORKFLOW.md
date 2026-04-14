@@ -91,10 +91,18 @@ Teacher-facing state controls (Start/Resume/Pause/Stop, mode locking during acti
 
 ---
 
+## Worked example (Subissue 8.2 — FR5 Teacher Interface Controls, follow-up)
+
+Follow-up FR5 refinement for board issue 8.2 is documented in **[`FR5_SUBISSUE_8_2.md`](./FR5_SUBISSUE_8_2.md)** with checklist **[`FR5_SUBISSUE_8_2_UAT_CHECKLIST.md`](./FR5_SUBISSUE_8_2_UAT_CHECKLIST.md)**.
+
+---
+
 ## Related project docs
 
 - **NFR1 Usability (Subissue 2.4):** [`NFR1_SUBISSUE_2_4.md`](./NFR1_SUBISSUE_2_4.md)
 - **FR5 Teacher Controls (Subissue 6.2):** [`FR5_SUBISSUE_6_2.md`](./FR5_SUBISSUE_6_2.md)
+- **FR5 Teacher Controls (Subissue 8.2):** [`FR5_SUBISSUE_8_2.md`](./FR5_SUBISSUE_8_2.md)
+- **FR5 8.2 UAT checklist:** [`FR5_SUBISSUE_8_2_UAT_CHECKLIST.md`](./FR5_SUBISSUE_8_2_UAT_CHECKLIST.md)
 - **FR1 (Subissue 7.1):** [`FR1_SUBISSUE_7_1.md`](./FR1_SUBISSUE_7_1.md)
 - **FR1 UAT checklist:** [`FR1_DIGITAL_INPUT_UAT_CHECKLIST.md`](./FR1_DIGITAL_INPUT_UAT_CHECKLIST.md)
 - Risk & debt: [`DEBT_AND_RISK.md`](./DEBT_AND_RISK.md)
