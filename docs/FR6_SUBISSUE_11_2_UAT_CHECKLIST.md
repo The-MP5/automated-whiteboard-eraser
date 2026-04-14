@@ -1,40 +1,20 @@
-# FR6 — Subissue 11.2 UAT checklist (optional / future)
+# FR6 — Subissue 11.2 UAT checklist
 
-Use this when **User Authentication and Profiles (FR6)** is implemented beyond documentation. For **Subissue 11.2** as delivered in the repo, verification is: docs linked, `getSupabaseAuth` present, and build green — see **§ Current release (11.2 documentation scope)**.
+## Without Supabase (offline simulator)
 
----
+- [ ] App loads; whiteboard and teacher controls work.
+- [ ] Header **Account** opens; message explains missing `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY`.
+- [ ] No console errors from auth code.
 
-## Current release (11.2 documentation scope)
+## With Supabase configured
 
-- [ ] `README.md` lists FR6 (optional) and links to `docs/FR6_SUBISSUE_11_2.md`.
-- [ ] `docs/SENIOR_PROJECT_II_AGENT_WORKFLOW.md` includes the Subissue 11.2 worked example.
-- [ ] `npm run build` completes without errors.
+**Prerequisites:** `.env` set; Supabase **Email** provider enabled; **Redirect URLs** include your dev origin (e.g. `http://localhost:8080`).
 
----
+- [ ] **Account** → enter email → **Send magic link** shows success toast.
+- [ ] Email link completes sign-in; after redirect, **Account** shows the signed-in email.
+- [ ] **Display name** can be saved; reopen menu and confirm it persists after refresh.
+- [ ] **Sign out** clears session; menu returns to magic-link form.
 
-## Future — authentication flow
+## Security spot-check
 
-- [ ] Sign-in path works for the chosen method (e.g. magic link or OAuth) in a staging Supabase project.
-- [ ] Invalid credentials or expired links show a clear, accessible error message.
-- [ ] Session persists across refresh when persistence is enabled (`localStorage` is already configured on the client).
-
----
-
-## Future — session and sign-out
-
-- [ ] Authenticated state is visible where the UI promises it (e.g. header or settings).
-- [ ] Sign-out clears session and returns to the unauthenticated experience without stale data leaks in the UI.
-
----
-
-## Future — profiles
-
-- [ ] Profile data loads for the signed-in user only.
-- [ ] Users cannot read or edit other users’ profile rows (verify with RLS or equivalent).
-
----
-
-## Future — security and compatibility
-
-- [ ] No service role or private keys in the frontend bundle or repo.
-- [ ] Auth-related behavior is smoke-tested on at least two supported browsers (see `docs/NFR4_COMPATIBILITY.md`).
+- [ ] Only **anon** key is in the frontend env (no service role in repo or `.env` committed).

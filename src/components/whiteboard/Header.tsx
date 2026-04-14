@@ -1,4 +1,5 @@
 import { Bot, Wifi, WifiOff } from "lucide-react";
+import UserAccountMenu from "@/components/auth/UserAccountMenu";
 
 interface HeaderProps {
   isConnected: boolean;
@@ -24,23 +25,26 @@ const Header = ({ isConnected }: HeaderProps) => {
             </div>
           </div>
 
-          {/* Connection Status */}
-          <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm ${
-            isConnected 
-              ? 'bg-success/20 text-success' 
-              : 'bg-danger/20 text-danger'
-          }`}>
-            {isConnected ? (
-              <>
-                <Wifi className="h-4 w-4" />
-                <span className="font-medium">ROS Connected</span>
-              </>
-            ) : (
-              <>
-                <WifiOff className="h-4 w-4" />
-                <span className="font-medium">Simulated Mode</span>
-              </>
-            )}
+          <div className="flex flex-wrap items-center justify-end gap-2">
+            {/* Connection Status */}
+            <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm ${
+              isConnected 
+                ? 'bg-success/20 text-success' 
+                : 'bg-danger/20 text-danger'
+            }`}>
+              {isConnected ? (
+                <>
+                  <Wifi className="h-4 w-4" />
+                  <span className="font-medium">ROS Connected</span>
+                </>
+              ) : (
+                <>
+                  <WifiOff className="h-4 w-4" />
+                  <span className="font-medium">Simulated Mode</span>
+                </>
+              )}
+            </div>
+            <UserAccountMenu />
           </div>
         </div>
       </div>

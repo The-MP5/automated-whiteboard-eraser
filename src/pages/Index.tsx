@@ -87,11 +87,12 @@ const Index = () => {
             </div>
 
             {/* Requirements Info */}
-            <div className="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
+            <div className="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2">
               {[
                 { id: 'FR1', label: 'Digital Input' },
                 { id: 'FR4', label: 'Safety Sensors' },
                 { id: 'FR5', label: 'Teacher Controls' },
+                { id: 'FR6', label: 'Auth / Profile (opt.)' },
                 { id: 'NFR1', label: '10s Erase Time' },
                 { id: 'NFR2', label: 'Error Logging' },
               ].map((req) => (

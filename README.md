@@ -57,7 +57,7 @@ This repo is the **React simulation UI** used to validate logic, timing, and con
 | **Digital archiving (Story 7)** | Snapshot canvas state (persistence design in docs; see debt notes) |
 | **Accessibility alert (Story 6)** | **10 s** countdown before erase starts |
 | **Compatibility (NFR4)** | Runs on **last 2** major Chrome / Edge / Firefox / Safari; **Node 20–22 LTS** for dev/build — see [`docs/NFR4_COMPATIBILITY.md`](./docs/NFR4_COMPATIBILITY.md) |
-| **Auth & profiles (FR6 — optional)** | Not required for the simulator; Supabase Auth hook and backlog notes for future sign-in / profiles — see [`docs/FR6_SUBISSUE_11_2.md`](./docs/FR6_SUBISSUE_11_2.md) |
+| **Auth & profiles (FR6 — optional)** | Header **Account** menu: magic-link sign-in + display name when Supabase env is set; see [`docs/FR6_SUBISSUE_11_2.md`](./docs/FR6_SUBISSUE_11_2.md) |
 
 ---
 
@@ -98,6 +98,8 @@ VITE_SUPABASE_ANON_KEY="YOUR_SUPABASE_ANON_KEY"
 ```
 
 The client reads **`VITE_SUPABASE_ANON_KEY`** (Supabase **anon public** key). For backward compatibility, **`VITE_SUPABASE_PUBLISHABLE_KEY`** with the same value is still accepted. Copy [`.env.example`](./.env.example) to `.env` and fill in values. Align table/schema with [`docs/DEBT_AND_RISK.md`](./docs/DEBT_AND_RISK.md) as the project wires up real persistence.
+
+**Authentication (FR6):** With env set, use **Account** in the header for email **magic link** sign-in and an optional **display name** (stored in user metadata). In the Supabase dashboard, enable **Email** under Authentication → Providers and add your dev URL (e.g. `http://localhost:8080`) under **URL Configuration** → **Redirect URLs**.
 
 ### Run the simulator
 
