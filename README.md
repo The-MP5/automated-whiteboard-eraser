@@ -40,6 +40,8 @@ This repo is the **React simulation UI** used to validate logic, timing, and con
 | **[FR5 — Subissue 9.1 UAT](./docs/FR5_SUBISSUE_9_1_UAT_CHECKLIST.md)** | Manual checklist for Subissue 9.1 |
 | **[FR5 — Subissue 10.2 (teacher controls follow-up)](./docs/FR5_SUBISSUE_10_2.md)** | FR5 continuation for board issue 10.2 |
 | **[FR5 — Subissue 10.2 UAT](./docs/FR5_SUBISSUE_10_2_UAT_CHECKLIST.md)** | Manual checklist for Subissue 10.2 |
+| **[FR6 — Subissue 11.2 (auth & profiles — optional/future)](./docs/FR6_SUBISSUE_11_2.md)** | FR6 planning, traceability, and Supabase Auth hook (Subissue 11.2) |
+| **[FR6 — Subissue 11.2 UAT](./docs/FR6_SUBISSUE_11_2_UAT_CHECKLIST.md)** | Future UAT when FR6 ships; doc-scope checks for 11.2 |
 
 ---
 
@@ -55,6 +57,7 @@ This repo is the **React simulation UI** used to validate logic, timing, and con
 | **Digital archiving (Story 7)** | Snapshot canvas state (persistence design in docs; see debt notes) |
 | **Accessibility alert (Story 6)** | **10 s** countdown before erase starts |
 | **Compatibility (NFR4)** | Runs on **last 2** major Chrome / Edge / Firefox / Safari; **Node 20–22 LTS** for dev/build — see [`docs/NFR4_COMPATIBILITY.md`](./docs/NFR4_COMPATIBILITY.md) |
+| **Auth & profiles (FR6 — optional)** | Not required for the simulator; Supabase Auth hook and backlog notes for future sign-in / profiles — see [`docs/FR6_SUBISSUE_11_2.md`](./docs/FR6_SUBISSUE_11_2.md) |
 
 ---
 
@@ -129,6 +132,8 @@ For Subissue **8.2 (FR5 teacher controls follow-up)**, complete the **[FR5 8.2 U
 For Subissue **9.1 (FR5 teacher controls follow-up)**, complete the **[FR5 9.1 UAT checklist](./docs/FR5_SUBISSUE_9_1_UAT_CHECKLIST.md)** before closing the issue.
 
 For Subissue **10.2 (FR5 teacher controls follow-up)**, complete the **[FR5 10.2 UAT checklist](./docs/FR5_SUBISSUE_10_2_UAT_CHECKLIST.md)** before closing the issue.
+
+For Subissue **11.2 (FR6 auth & profiles — optional/future)**, use the **[FR6 11.2 UAT checklist](./docs/FR6_SUBISSUE_11_2_UAT_CHECKLIST.md)** — documentation-scope checks now; full auth UAT when FR6 is implemented.
 
 For Subissue **7.1 (FR1 digital input)**, complete the **[digital input UAT checklist](./docs/FR1_DIGITAL_INPUT_UAT_CHECKLIST.md)** before closing the issue.
 

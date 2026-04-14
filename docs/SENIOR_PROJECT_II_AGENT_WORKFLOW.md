@@ -109,6 +109,12 @@ FR5 board issue 10.2 is documented in **[`FR5_SUBISSUE_10_2.md`](./FR5_SUBISSUE_
 
 ---
 
+## Worked example (Subissue 11.2 — FR6 User Authentication and Profiles, optional / future)
+
+FR6 is tracked as **optional / future**: **[`FR6_SUBISSUE_11_2.md`](./FR6_SUBISSUE_11_2.md)** describes scope boundaries, future Supabase Auth notes, and the `getSupabaseAuth` integration hook. Verification template: **[`FR6_SUBISSUE_11_2_UAT_CHECKLIST.md`](./FR6_SUBISSUE_11_2_UAT_CHECKLIST.md)** (documentation checks for 11.2; full auth UAT when FR6 ships).
+
+---
+
 ## Related project docs
 
 - **NFR1 Usability (Subissue 2.4):** [`NFR1_SUBISSUE_2_4.md`](./NFR1_SUBISSUE_2_4.md)
@@ -119,6 +125,8 @@ FR5 board issue 10.2 is documented in **[`FR5_SUBISSUE_10_2.md`](./FR5_SUBISSUE_
 - **FR5 9.1 UAT checklist:** [`FR5_SUBISSUE_9_1_UAT_CHECKLIST.md`](./FR5_SUBISSUE_9_1_UAT_CHECKLIST.md)
 - **FR5 Teacher Controls (Subissue 10.2):** [`FR5_SUBISSUE_10_2.md`](./FR5_SUBISSUE_10_2.md)
 - **FR5 10.2 UAT checklist:** [`FR5_SUBISSUE_10_2_UAT_CHECKLIST.md`](./FR5_SUBISSUE_10_2_UAT_CHECKLIST.md)
+- **FR6 Auth & profiles (Subissue 11.2):** [`FR6_SUBISSUE_11_2.md`](./FR6_SUBISSUE_11_2.md)
+- **FR6 11.2 UAT checklist:** [`FR6_SUBISSUE_11_2_UAT_CHECKLIST.md`](./FR6_SUBISSUE_11_2_UAT_CHECKLIST.md)
 - **FR1 (Subissue 7.1):** [`FR1_SUBISSUE_7_1.md`](./FR1_SUBISSUE_7_1.md)
 - **FR1 UAT checklist:** [`FR1_DIGITAL_INPUT_UAT_CHECKLIST.md`](./FR1_DIGITAL_INPUT_UAT_CHECKLIST.md)
 - Risk & debt: [`DEBT_AND_RISK.md`](./DEBT_AND_RISK.md)

@@ -67,3 +67,12 @@ export const supabase: SupabaseClient<Database> | null = resolvedEnv
       },
     })
   : null;
+
+/**
+ * Supabase Auth API when the client is configured; otherwise `null`.
+ * FR6 (User authentication and profiles) — optional/future; see `docs/FR6_SUBISSUE_11_2.md`.
+ * The simulator does not ship login UI yet; use this when wiring sign-in and profiles.
+ */
+export function getSupabaseAuth(): SupabaseClient<Database>['auth'] | null {
+  return supabase?.auth ?? null;
+}
