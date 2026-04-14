@@ -103,6 +103,12 @@ FR5 board issue 9.1 is documented in **[`FR5_SUBISSUE_9_1.md`](./FR5_SUBISSUE_9_
 
 ---
 
+## Worked example (Subissue 10.2 — FR5 Teacher Interface Controls, follow-up)
+
+FR5 board issue 10.2 is documented in **[`FR5_SUBISSUE_10_2.md`](./FR5_SUBISSUE_10_2.md)** with checklist **[`FR5_SUBISSUE_10_2_UAT_CHECKLIST.md`](./FR5_SUBISSUE_10_2_UAT_CHECKLIST.md)**.
+
+---
+
 ## Related project docs
 
 - **NFR1 Usability (Subissue 2.4):** [`NFR1_SUBISSUE_2_4.md`](./NFR1_SUBISSUE_2_4.md)
@@ -111,6 +117,8 @@ FR5 board issue 9.1 is documented in **[`FR5_SUBISSUE_9_1.md`](./FR5_SUBISSUE_9_
 - **FR5 8.2 UAT checklist:** [`FR5_SUBISSUE_8_2_UAT_CHECKLIST.md`](./FR5_SUBISSUE_8_2_UAT_CHECKLIST.md)
 - **FR5 Teacher Controls (Subissue 9.1):** [`FR5_SUBISSUE_9_1.md`](./FR5_SUBISSUE_9_1.md)
 - **FR5 9.1 UAT checklist:** [`FR5_SUBISSUE_9_1_UAT_CHECKLIST.md`](./FR5_SUBISSUE_9_1_UAT_CHECKLIST.md)
+- **FR5 Teacher Controls (Subissue 10.2):** [`FR5_SUBISSUE_10_2.md`](./FR5_SUBISSUE_10_2.md)
+- **FR5 10.2 UAT checklist:** [`FR5_SUBISSUE_10_2_UAT_CHECKLIST.md`](./FR5_SUBISSUE_10_2_UAT_CHECKLIST.md)
 - **FR1 (Subissue 7.1):** [`FR1_SUBISSUE_7_1.md`](./FR1_SUBISSUE_7_1.md)
 - **FR1 UAT checklist:** [`FR1_DIGITAL_INPUT_UAT_CHECKLIST.md`](./FR1_DIGITAL_INPUT_UAT_CHECKLIST.md)
 - Risk & debt: [`DEBT_AND_RISK.md`](./DEBT_AND_RISK.md)
