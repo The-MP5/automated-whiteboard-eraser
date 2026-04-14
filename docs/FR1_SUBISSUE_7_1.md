@@ -45,6 +45,7 @@ Worked example of [`SENIOR_PROJECT_II_AGENT_WORKFLOW.md`](./SENIOR_PROJECT_II_AG
 - [ ] User can **undo** last object, **clear** board (non-erase flow), **save snapshot** from the canvas toolbar.
 - [ ] In **partial** erase mode, user can **click-drag** to define a rectangle on the canvas surface.
 - [ ] Canvas region is programmatically identifiable for accessibility review (e.g. `aria-label` / `role` on wrapper).
+- [ ] Keyboard shortcuts support core FR1 inputs (`D`, `S`, `T`, `U`, `Delete`) when safe.
 
 ---
 
@@ -55,6 +56,7 @@ Worked example of [`SENIOR_PROJECT_II_AGENT_WORKFLOW.md`](./SENIOR_PROJECT_II_AG
 | **Manual** | Each tool toggles; draw → undo → clear; add text → select → move; partial drag rectangle visible |
 | **Regression** | Full / partial erase from `ControlPanel` still receive canvas ref and complete without console errors |
 | **NFR4** | Smoke in two browsers per [`NFR4_UAT_CHECKLIST.md`](./NFR4_UAT_CHECKLIST.md) |
+| **UAT checklist** | Complete [`FR1_DIGITAL_INPUT_UAT_CHECKLIST.md`](./FR1_DIGITAL_INPUT_UAT_CHECKLIST.md) for issue evidence |
 
 ---
 

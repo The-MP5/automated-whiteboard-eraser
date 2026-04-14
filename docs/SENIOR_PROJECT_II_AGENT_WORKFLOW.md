@@ -75,6 +75,7 @@ Steps:
 ## Worked example (Subissue 7.1 — FR1)
 
 End-to-end application of this workflow for **digital interface / input** is documented in **[`FR1_SUBISSUE_7_1.md`](./FR1_SUBISSUE_7_1.md)** (decomposition **7.1.1–7.1.3**, plan, traceability, acceptance tests).
+Manual verification template: **[`FR1_DIGITAL_INPUT_UAT_CHECKLIST.md`](./FR1_DIGITAL_INPUT_UAT_CHECKLIST.md)**.
 
 ---
 
@@ -95,5 +96,6 @@ Teacher-facing state controls (Start/Resume/Pause/Stop, mode locking during acti
 - **NFR1 Usability (Subissue 2.4):** [`NFR1_SUBISSUE_2_4.md`](./NFR1_SUBISSUE_2_4.md)
 - **FR5 Teacher Controls (Subissue 6.2):** [`FR5_SUBISSUE_6_2.md`](./FR5_SUBISSUE_6_2.md)
 - **FR1 (Subissue 7.1):** [`FR1_SUBISSUE_7_1.md`](./FR1_SUBISSUE_7_1.md)
+- **FR1 UAT checklist:** [`FR1_DIGITAL_INPUT_UAT_CHECKLIST.md`](./FR1_DIGITAL_INPUT_UAT_CHECKLIST.md)
 - Risk & debt: [`DEBT_AND_RISK.md`](./DEBT_AND_RISK.md)
 - VIBE gatekeeper example: [`VIBE_REFACTOR_ASSIGNMENT.md`](./VIBE_REFACTOR_ASSIGNMENT.md)

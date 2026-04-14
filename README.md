@@ -29,6 +29,7 @@ This repo is the **React simulation UI** used to validate logic, timing, and con
 | **[NFR4 — compatibility](./docs/NFR4_COMPATIBILITY.md)** | Browser / Node baseline (Subissue 4.4) |
 | **[NFR4 — UAT checklist](./docs/NFR4_UAT_CHECKLIST.md)** | Manual two-browser smoke (Subissue 4.4) |
 | **[FR1 — Subissue 7.1 (workflow pack)](./docs/FR1_SUBISSUE_7_1.md)** | Digital interface for input: decomposition, traceability, acceptance tests |
+| **[FR1 — digital input UAT](./docs/FR1_DIGITAL_INPUT_UAT_CHECKLIST.md)** | Manual checklist for Subissue 7.1 |
 | **[NFR1 — Subissue 2.4 (usability)](./docs/NFR1_SUBISSUE_2_4.md)** | Erase UX: status, progress, countdown, controls, traceability |
 | **[NFR1 — usability UAT](./docs/NFR1_USABILITY_UAT_CHECKLIST.md)** | Manual checklist for Subissue 2.4 |
 | **[FR5 — Subissue 6.2 (teacher controls)](./docs/FR5_SUBISSUE_6_2.md)** | Teacher control state model, guidance, and acceptance checks |
@@ -116,6 +117,8 @@ For Subissue **4.4**, complete the **[UAT checklist](./docs/NFR4_UAT_CHECKLIST.m
 For Subissue **2.4 (NFR1 usability)**, complete the **[usability UAT checklist](./docs/NFR1_USABILITY_UAT_CHECKLIST.md)** before closing the issue.
 
 For Subissue **6.2 (FR5 teacher controls)**, complete the **[teacher controls UAT checklist](./docs/FR5_TEACHER_CONTROLS_UAT_CHECKLIST.md)** before closing the issue.
+
+For Subissue **7.1 (FR1 digital input)**, complete the **[digital input UAT checklist](./docs/FR1_DIGITAL_INPUT_UAT_CHECKLIST.md)** before closing the issue.
 
 ---
 

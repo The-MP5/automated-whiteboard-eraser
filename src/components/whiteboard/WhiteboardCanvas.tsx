@@ -128,11 +128,11 @@ const WhiteboardCanvas = ({
     }
   }, [activeTool, fabricCanvas]);
 
-  const handleToolChange = (tool: Tool) => {
+  const handleToolChange = useCallback((tool: Tool) => {
     setActiveTool(tool);
-  };
+  }, []);
 
-  const handleAddText = () => {
+  const handleAddText = useCallback(() => {
     if (!fabricCanvas) return;
     const text = new FabricText("New Text", {
       left: 100,
@@ -146,23 +146,23 @@ const WhiteboardCanvas = ({
     fabricCanvas.setActiveObject(text);
     fabricCanvas.renderAll();
     setActiveTool('select');
-  };
+  }, [fabricCanvas]);
 
-  const handleClear = () => {
+  const handleClear = useCallback(() => {
     if (!fabricCanvas) return;
     fabricCanvas.clear();
     fabricCanvas.backgroundColor = WHITEBOARD_CANVAS_BACKGROUND_COLOR;
     fabricCanvas.renderAll();
-  };
+  }, [fabricCanvas]);
 
-  const handleUndo = () => {
+  const handleUndo = useCallback(() => {
     if (!fabricCanvas) return;
     const objects = fabricCanvas.getObjects();
     if (objects.length > 0) {
       fabricCanvas.remove(objects[objects.length - 1]);
       fabricCanvas.renderAll();
     }
-  };
+  }, [fabricCanvas]);
 
   // Partial area selection handlers
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
@@ -203,16 +203,38 @@ const WhiteboardCanvas = ({
     }
   }, [isSelecting, selectionRect, onSetPartialArea]);
 
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (isErasing) return;
+      const target = event.target as HTMLElement | null;
+      if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA")) {
+        return;
+      }
+
+      const key = event.key.toLowerCase();
+      if (key === "d") handleToolChange("draw");
+      if (key === "s") handleToolChange("select");
+      if (key === "t") handleAddText();
+      if (key === "u") handleUndo();
+      if (key === "delete" || key === "backspace") handleClear();
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isErasing, handleAddText, handleClear, handleToolChange, handleUndo]);
+
   return (
     <div className="space-y-4">
       {/* Toolbar */}
       <div className="flex flex-wrap items-center justify-between gap-4 p-3 bg-card rounded-lg border border-border">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2" role="toolbar" aria-label="Whiteboard input tools">
           <Button
             variant={activeTool === 'select' ? 'toolActive' : 'tool'}
             size="iconSm"
             onClick={() => handleToolChange('select')}
             disabled={isErasing}
+            aria-label="Select tool (shortcut: S)"
+            title="Select tool (S)"
           >
             <MousePointer className="h-4 w-4" />
           </Button>
@@ -221,6 +243,8 @@ const WhiteboardCanvas = ({
             size="iconSm"
             onClick={() => handleToolChange('draw')}
             disabled={isErasing}
+            aria-label="Draw tool (shortcut: D)"
+            title="Draw tool (D)"
           >
             <Pencil className="h-4 w-4" />
           </Button>
@@ -229,6 +253,8 @@ const WhiteboardCanvas = ({
             size="iconSm"
             onClick={handleAddText}
             disabled={isErasing}
+            aria-label="Add text (shortcut: T)"
+            title="Add text (T)"
           >
             <Type className="h-4 w-4" />
           </Button>
@@ -238,6 +264,8 @@ const WhiteboardCanvas = ({
             size="iconSm"
             onClick={handleUndo}
             disabled={isErasing}
+            aria-label="Undo last object (shortcut: U)"
+            title="Undo (U)"
           >
             <Undo className="h-4 w-4" />
           </Button>
@@ -246,6 +274,8 @@ const WhiteboardCanvas = ({
             size="iconSm"
             onClick={handleClear}
             disabled={isErasing}
+            aria-label="Clear board (shortcut: Delete)"
+            title="Clear board (Delete)"
           >
             <Trash2 className="h-4 w-4" />
           </Button>
@@ -255,11 +285,15 @@ const WhiteboardCanvas = ({
           size="sm"
           onClick={onSaveSnapshot}
           disabled={isErasing}
+          aria-label="Save whiteboard snapshot"
         >
           <Download className="h-4 w-4" />
           Save Snapshot
         </Button>
       </div>
+      <p className="text-xs text-muted-foreground">
+        FR1 quick keys: <span className="font-mono">D</span> draw, <span className="font-mono">S</span> select, <span className="font-mono">T</span> text, <span className="font-mono">U</span> undo, <span className="font-mono">Delete</span> clear.
+      </p>
 
       {/* Canvas Container */}
       <div 
