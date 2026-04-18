@@ -12,6 +12,7 @@ export { proximityWhenClear, proximityWhenObstacleDetected } from "./proximitySt
 export { createSnapshotNote, createSystemLog } from "./snapshotAndLog";
 export {
   canPause,
+  canScheduledStart,
   canStart,
   canStop,
   evaluateCommand,
@@ -28,3 +29,17 @@ export type {
   EraseAreaInvalidReason,
   EraseAreaValidation,
 } from "./validateEraseArea";
+export {
+  SCHEDULE_DUE_WINDOW_MS,
+  isScheduleDue,
+  nextDueSchedule,
+  scheduleDueState,
+  validateSchedule,
+} from "./eraseSchedule";
+export type {
+  EraseSchedule,
+  ScheduleDueState,
+  ScheduleInput,
+  ScheduleInvalidReason,
+  ScheduleValidation,
+} from "./eraseSchedule";
