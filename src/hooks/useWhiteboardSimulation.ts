@@ -15,6 +15,9 @@ import { toast } from "sonner";
 import {
   COUNTDOWN_SECONDS,
   applyEraseToCanvas,
+  canPause,
+  canStart,
+  canStop,
   computeEraseProgressTick,
   createSnapshotNote,
   createSystemLog,
@@ -148,10 +151,10 @@ export const useWhiteboardSimulation = () => {
   }, [addLog, completeErase]);
 
   const startErase = useCallback(() => {
-    if (status !== "idle" && status !== "completed" && status !== "paused") {
-      const reason = `Start is unavailable while status is '${status}'`;
-      auditCommand("start", false, reason);
-      addLog("warning", `FR2: ${reason}`);
+    const guard = canStart(status);
+    if (!guard.allowed) {
+      auditCommand("start", false, guard.rejection.message);
+      addLog("warning", `FR2: ${guard.rejection.message}`);
       toast.info("Start unavailable in current state");
       return;
     }
@@ -181,10 +184,10 @@ export const useWhiteboardSimulation = () => {
   }, [addLog]);
 
   const pauseErase = useCallback(() => {
-    if (status !== "erasing") {
-      const reason = `Pause is unavailable while status is '${status}'`;
-      auditCommand("pause", false, reason);
-      addLog("warning", `FR2: ${reason}`);
+    const guard = canPause(status);
+    if (!guard.allowed) {
+      auditCommand("pause", false, guard.rejection.message);
+      addLog("warning", `FR2: ${guard.rejection.message}`);
       toast.info("Pause unavailable in current state");
       return;
     }
@@ -202,15 +205,10 @@ export const useWhiteboardSimulation = () => {
   }, [status, addLog, auditCommand]);
 
   const stopErase = useCallback(() => {
-    const canStop =
-      status === "erasing" ||
-      status === "countdown" ||
-      status === "paused" ||
-      status === "obstacle-detected";
-    if (!canStop) {
-      const reason = `Stop is unavailable while status is '${status}'`;
-      auditCommand("stop", false, reason);
-      addLog("warning", `FR2: ${reason}`);
+    const guard = canStop(status);
+    if (!guard.allowed) {
+      auditCommand("stop", false, guard.rejection.message);
+      addLog("warning", `FR2: ${guard.rejection.message}`);
       toast.info("Stop unavailable in current state");
       return;
     }

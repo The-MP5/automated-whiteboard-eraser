@@ -10,3 +10,14 @@ export { computeEraseProgressTick } from "./eraseProgress";
 export type { EraseProgressTick } from "./eraseProgress";
 export { proximityWhenClear, proximityWhenObstacleDetected } from "./proximityState";
 export { createSnapshotNote, createSystemLog } from "./snapshotAndLog";
+export {
+  canPause,
+  canStart,
+  canStop,
+  evaluateCommand,
+} from "./commandGuards";
+export type {
+  CommandGuardResult,
+  CommandRejection,
+  CommandRejectionCode,
+} from "./commandGuards";
