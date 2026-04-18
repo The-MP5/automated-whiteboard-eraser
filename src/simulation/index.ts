@@ -9,6 +9,35 @@ export { applyEraseToCanvas } from "./eraseCanvas";
 export { computeEraseProgressTick } from "./eraseProgress";
 export type { EraseProgressTick } from "./eraseProgress";
 export { proximityWhenClear, proximityWhenObstacleDetected } from "./proximityState";
+export {
+  DEFAULT_PROXIMITY_THRESHOLDS,
+  classifyProximityZone,
+} from "./proximityClassifier";
+export type {
+  ProximityZone,
+  ProximityZoneThresholds,
+} from "./proximityClassifier";
+export {
+  DEFAULT_HYSTERESIS,
+  initialHysteresisState,
+  reduceProximityHysteresis,
+} from "./proximityHysteresis";
+export type {
+  HysteresisConfig,
+  ProximityHysteresisState,
+} from "./proximityHysteresis";
+export { evaluateSafetyAction } from "./safetyPolicy";
+export type {
+  SafetyAction,
+  SafetyDecision,
+  SafetyReason,
+} from "./safetyPolicy";
+export { createSafetyEvent } from "./safetyEvents";
+export type {
+  SafetyEvent,
+  SafetyEventInput,
+  SafetyEventKind,
+} from "./safetyEvents";
 export { createSnapshotNote, createSystemLog } from "./snapshotAndLog";
 export {
   canPause,
