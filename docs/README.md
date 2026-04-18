@@ -8,4 +8,5 @@
 | [LAB5_SPRINT_EXECUTION_SUMMARY.md](./LAB5_SPRINT_EXECUTION_SUMMARY.md) | Lab 5 — sprint execution summary (completed/incomplete, collaboration, evidence) |
 | [RTM_LAB5_UPDATE.md](./RTM_LAB5_UPDATE.md) | Lab 5 — updated traceability matrix for sprint execution |
 | [LAB6_LOVABLE_FEATURE_EXTENSION.md](./LAB6_LOVABLE_FEATURE_EXTENSION.md) | Lab 6 — Lovable.dev feature extension (PR documentation, Subissue 2.3 / FR5) |
+| [AI_VERIFICATION_CHECKLIST.md](./AI_VERIFICATION_CHECKLIST.md) | Risk R1 — mandatory review checklist for AI-generated edits affecting NFR1 / FR4 / Story 6 |
 | [architecture-diagram.svg](./architecture-diagram.svg) | Architecture diagram (referenced by the project reset report) |
