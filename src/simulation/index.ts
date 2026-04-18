@@ -58,6 +58,25 @@ export {
   checkTouchRateLimit,
 } from "./touchRateLimit";
 export type { TouchRateLimitResult } from "./touchRateLimit";
+export {
+  DEFAULT_PRE_WARN_MS,
+  DEFAULT_COUNTDOWN_MS,
+  DEFAULT_FINAL_MS,
+  buildEraseNotificationPlan,
+  getCountdownPhase,
+} from "./eraseNotification";
+export type {
+  CountdownPhase,
+  CountdownTick,
+  EraseNotificationConfig,
+  EraseNotificationPlan,
+} from "./eraseNotification";
+export { createNotificationEvent } from "./notificationEvents";
+export type {
+  NotificationEvent,
+  NotificationEventInput,
+  NotificationEventKind,
+} from "./notificationEvents";
 export { validateEraseArea } from "./validateEraseArea";
 export type {
   CanvasBounds,
