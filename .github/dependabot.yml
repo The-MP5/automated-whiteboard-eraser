@@ -1,0 +1,62 @@
+# Dependency guardrails — R3 (#95).
+# See docs/DEPENDENCY_RISK_AND_UPGRADES.md for the tiering + verification matrix.
+
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+    groups:
+      supabase:
+        patterns:
+          - "@supabase/*"
+      fabric:
+        patterns:
+          - "fabric"
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
+      radix:
+        patterns:
+          - "@radix-ui/*"
+      tooling:
+        dependency-type: "development"
+    ignore:
+      # T1 packages: no automated major bumps — humans open the bump PR.
+      - dependency-name: "@supabase/supabase-js"
+        update-types:
+          - "version-update:semver-major"
+      # T2 packages: no automated major bumps — see policy §5.2.
+      - dependency-name: "fabric"
+        update-types:
+          - "version-update:semver-major"
+      - dependency-name: "react"
+        update-types:
+          - "version-update:semver-major"
+      - dependency-name: "react-dom"
+        update-types:
+          - "version-update:semver-major"
+      - dependency-name: "vite"
+        update-types:
+          - "version-update:semver-major"
+      - dependency-name: "@tanstack/react-query"
+        update-types:
+          - "version-update:semver-major"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+      - "ci"
