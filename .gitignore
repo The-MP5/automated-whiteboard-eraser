@@ -12,6 +12,12 @@ dist
 dist-ssr
 *.local
 
+# Env files (R2 / #94 — data retention + security policy).
+# Only `.env.example` may be committed; everything else is ignored.
+.env
+.env.*
+!.env.example
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
