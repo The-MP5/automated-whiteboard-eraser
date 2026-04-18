@@ -22,7 +22,13 @@ export type {
   CommandGuardResult,
   CommandRejection,
   CommandRejectionCode,
+  CommandSource,
 } from "./commandGuards";
+export {
+  DEFAULT_TOUCH_MIN_INTERVAL_MS,
+  checkTouchRateLimit,
+} from "./touchRateLimit";
+export type { TouchRateLimitResult } from "./touchRateLimit";
 export { validateEraseArea } from "./validateEraseArea";
 export type {
   CanvasBounds,
