@@ -17,7 +17,14 @@ export {
   evaluateCommand,
 } from "./commandGuards";
 export type {
+  CommandContext,
   CommandGuardResult,
   CommandRejection,
   CommandRejectionCode,
 } from "./commandGuards";
+export { validateEraseArea } from "./validateEraseArea";
+export type {
+  CanvasBounds,
+  EraseAreaInvalidReason,
+  EraseAreaValidation,
+} from "./validateEraseArea";

@@ -151,11 +151,21 @@ export const useWhiteboardSimulation = () => {
   }, [addLog, completeErase]);
 
   const startErase = useCallback(() => {
-    const guard = canStart(status);
+    const canvas = fabricCanvasRef.current;
+    const canvasBounds =
+      canvas != null
+        ? { width: canvas.getWidth(), height: canvas.getHeight() }
+        : undefined;
+    const guard = canStart(status, { eraseMode, partialArea, canvasBounds });
     if (!guard.allowed) {
       auditCommand("start", false, guard.rejection.message);
       addLog("warning", `FR2: ${guard.rejection.message}`);
-      toast.info("Start unavailable in current state");
+      const { code } = guard.rejection;
+      if (code === "no_section_selected" || code === "invalid_section_bounds") {
+        toast.info("Select an area to erase before starting");
+      } else {
+        toast.info("Start unavailable in current state");
+      }
       return;
     }
     auditCommand("start", true);
@@ -170,7 +180,7 @@ export const useWhiteboardSimulation = () => {
     saveSnapshot();
     setStatus("countdown");
     addLog("info", "Countdown started (10 seconds warning)");
-  }, [status, saveSnapshot, simulateErase, addLog, auditCommand]);
+  }, [status, eraseMode, partialArea, saveSnapshot, simulateErase, addLog, auditCommand]);
 
   const onCountdownComplete = useCallback(() => {
     setStatus("erasing");
