@@ -15,10 +15,14 @@ const buttonVariants = cva(
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-secondary hover:text-secondary-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        control: "bg-primary text-primary-foreground font-bold uppercase tracking-wider hover:bg-primary/90 shadow-glow-primary active:scale-95",
-        controlStop: "bg-danger text-danger-foreground font-bold uppercase tracking-wider hover:bg-danger/90 shadow-glow-danger active:scale-95",
-        controlPause: "bg-warning text-warning-foreground font-bold uppercase tracking-wider hover:bg-warning/90 shadow-glow-warning active:scale-95",
-        controlSuccess: "bg-success text-success-foreground font-bold uppercase tracking-wider hover:bg-success/90 shadow-glow-success active:scale-95",
+        control:
+          "bg-success text-success-foreground font-semibold hover:bg-success/90 shadow-glow-success active:scale-95",
+        controlStop:
+          "bg-danger text-danger-foreground font-semibold hover:bg-danger/90 shadow-glow-danger active:scale-95",
+        controlPause:
+          "bg-warning text-warning-foreground font-semibold hover:bg-warning/90 shadow-glow-warning active:scale-95",
+        controlSuccess:
+          "bg-success text-success-foreground font-semibold hover:bg-success/90 shadow-glow-success active:scale-95",
         tool: "bg-secondary/60 text-foreground border border-border hover:bg-secondary hover:border-primary/50",
         toolActive: "bg-primary/20 text-primary border border-primary shadow-glow-primary",
       },
