@@ -92,6 +92,41 @@ export type {
   VoiceEventInput,
   VoiceEventKind,
 } from "./voiceEvents";
+export {
+  DEFAULT_ENERGY_BUDGET,
+  checkEnergyBudget,
+} from "./energyBudget";
+export type {
+  EnergyBudget,
+  EnergyCheck,
+  EnergyCheckReason,
+  EnergySample,
+} from "./energyBudget";
+export {
+  DEFAULT_DUTY_CYCLE,
+  INITIAL_DUTY_CYCLE,
+  reduceDutyCycle,
+} from "./dutyCycle";
+export type {
+  DutyCycleConfig,
+  DutyCycleSample,
+  DutyCycleState,
+} from "./dutyCycle";
+export { evaluateCompliance } from "./safetyCompliance";
+export type {
+  ComplianceFinding,
+  ComplianceFindingCode,
+  ComplianceInput,
+  ComplianceReport,
+  ComplianceSeverity,
+  ComplianceStatus,
+} from "./safetyCompliance";
+export { createComplianceEvent } from "./complianceEvents";
+export type {
+  ComplianceEvent,
+  ComplianceEventInput,
+  ComplianceEventKind,
+} from "./complianceEvents";
 export { validateEraseArea } from "./validateEraseArea";
 export type {
   CanvasBounds,
