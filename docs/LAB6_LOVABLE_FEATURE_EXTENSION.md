@@ -54,7 +54,7 @@ Lovable also produced a **stub `Index`** used only inside Lovable for preview. T
 
 **Branch:** `vikashrivers` → PR into `main`.
 
-**Sub-task decomposition:** [#136](https://github.com/The-MP5/automated-whiteboard-eraser/issues/136)–[#140](https://github.com/The-MP5/automated-whiteboard-eraser/issues/140) under [#58](https://github.com/The-MP5/automated-whiteboard-eraser/issues/58).
+**Sub-task decomposition (traceability):** [#136](https://github.com/The-MP5/automated-whiteboard-eraser/issues/136)–[#140](https://github.com/The-MP5/automated-whiteboard-eraser/issues/140) under [#58](https://github.com/The-MP5/automated-whiteboard-eraser/issues/58).
 
 ---
 
