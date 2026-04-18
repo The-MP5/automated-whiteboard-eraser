@@ -46,6 +46,11 @@ import {
  *     interval of a prior command are rejected with `rate_limited`, so
  *     kiosk / mobile double-taps don't accidentally re-fire. Mouse and
  *     keyboard sources remain un-rate-limited to preserve desktop UX.
+ *   - F6 callers set `context.requireAcknowledgment = true` and supply
+ *     `acknowledgedAt` once the teacher dismisses the pre-erase warning.
+ *     Start is rejected with `notification_not_acknowledged` until the
+ *     warning is acknowledged, so accidental taps during the grace
+ *     window can't bypass the "notify me before erase" policy.
  *   - F1 callers may omit the context entirely; full-erase semantics apply.
  *
  * Rejection codes:
@@ -63,6 +68,9 @@ import {
  *                                window; teacher must re-schedule.
  *   - `rate_limited`           — F4: touch-sourced command fired within
  *                                the minimum inter-command interval.
+ *   - `notification_not_acknowledged`
+ *                              — F6: Start pressed while a pre-erase
+ *                                warning is still pending acknowledgment.
  */
 
 export type CommandRejectionCode =
@@ -75,7 +83,8 @@ export type CommandRejectionCode =
   | "schedule_disabled"
   | "schedule_not_due"
   | "schedule_expired"
-  | "rate_limited";
+  | "rate_limited"
+  | "notification_not_acknowledged";
 
 export type CommandSource = "touch" | "mouse" | "keyboard" | "programmatic";
 
@@ -97,6 +106,8 @@ export interface CommandContext {
   lastCommandAt?: Date | number | null;
   now?: Date | number;
   minTouchIntervalMs?: number;
+  requireAcknowledgment?: boolean;
+  acknowledgedAt?: Date | number | null;
 }
 
 /**
@@ -169,6 +180,14 @@ export function canStart(
   if (context.eraseMode === "partial" && status !== "paused") {
     const check = validateEraseArea(context.partialArea, context.canvasBounds);
     if (!check.valid) return sectionRejection(status, check.reason);
+  }
+
+  if (context.requireAcknowledgment && context.acknowledgedAt == null) {
+    return deny(
+      "notification_not_acknowledged",
+      status,
+      "Start ignored — acknowledge the pre-erase warning before starting.",
+    );
   }
 
   return { allowed: true };
