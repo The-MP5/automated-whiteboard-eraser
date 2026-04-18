@@ -13,6 +13,10 @@ import {
   scheduleDueState,
   type EraseSchedule,
 } from "./eraseSchedule";
+import {
+  checkTouchRateLimit,
+  DEFAULT_TOUCH_MIN_INTERVAL_MS,
+} from "./touchRateLimit";
 
 /**
  * FR2 command control — pure, side-effect free guards for start / pause / stop
@@ -36,6 +40,12 @@ import {
  *     which composes schedule state (enabled, due, not expired) with the
  *     existing `canStart` state/context invariants — partial-mode section
  *     validation still applies to schedule-fired starts.
+ *   - F4 callers annotate `context.source` (`touch` / `mouse` / `keyboard`
+ *     / `programmatic`) and optionally pass `lastCommandAt` +
+ *     `minTouchIntervalMs`. Touch-sourced commands fired within the
+ *     interval of a prior command are rejected with `rate_limited`, so
+ *     kiosk / mobile double-taps don't accidentally re-fire. Mouse and
+ *     keyboard sources remain un-rate-limited to preserve desktop UX.
  *   - F1 callers may omit the context entirely; full-erase semantics apply.
  *
  * Rejection codes:
@@ -51,6 +61,8 @@ import {
  *   - `schedule_not_due`       — F3: scheduled time has not yet arrived.
  *   - `schedule_expired`       — F3: scheduled time is beyond the grace
  *                                window; teacher must re-schedule.
+ *   - `rate_limited`           — F4: touch-sourced command fired within
+ *                                the minimum inter-command interval.
  */
 
 export type CommandRejectionCode =
@@ -62,7 +74,10 @@ export type CommandRejectionCode =
   | "invalid_section_bounds"
   | "schedule_disabled"
   | "schedule_not_due"
-  | "schedule_expired";
+  | "schedule_expired"
+  | "rate_limited";
+
+export type CommandSource = "touch" | "mouse" | "keyboard" | "programmatic";
 
 export interface CommandRejection {
   code: CommandRejectionCode;
@@ -78,7 +93,36 @@ export interface CommandContext {
   eraseMode?: EraseMode;
   partialArea?: EraseArea | null;
   canvasBounds?: CanvasBounds;
+  source?: CommandSource;
+  lastCommandAt?: Date | number | null;
+  now?: Date | number;
+  minTouchIntervalMs?: number;
 }
+
+/**
+ * F4: If the command arrived from a touchscreen / mobile tap, reject
+ * presses that land inside the minimum inter-command interval so the
+ * kiosk doesn't re-fire on finger bounce. Returns `null` when no
+ * rate-limit violation; a populated rejection otherwise.
+ */
+const touchRateRejection = (
+  context: CommandContext,
+  status: SystemStatus,
+): CommandGuardResult | null => {
+  if (context.source !== "touch") return null;
+  if (context.lastCommandAt == null) return null;
+
+  const interval = context.minTouchIntervalMs ?? DEFAULT_TOUCH_MIN_INTERVAL_MS;
+  const now = context.now ?? Date.now();
+  const check = checkTouchRateLimit(context.lastCommandAt, now, interval);
+  if (check.ok) return null;
+
+  return deny(
+    "rate_limited",
+    status,
+    `Touch command ignored — retry in ${Math.ceil(check.retryAfterMs)} ms.`,
+  );
+};
 
 const deny = (
   code: CommandRejectionCode,
@@ -108,6 +152,9 @@ export function canStart(
   status: SystemStatus,
   context: CommandContext = {},
 ): CommandGuardResult {
+  const rate = touchRateRejection(context, status);
+  if (rate) return rate;
+
   if (status === "erasing" || status === "countdown") {
     return deny("already_running", status, `Start ignored — erase is already ${status}.`);
   }
@@ -127,7 +174,13 @@ export function canStart(
   return { allowed: true };
 }
 
-export function canPause(status: SystemStatus): CommandGuardResult {
+export function canPause(
+  status: SystemStatus,
+  context: CommandContext = {},
+): CommandGuardResult {
+  const rate = touchRateRejection(context, status);
+  if (rate) return rate;
+
   if (status === "erasing") return { allowed: true };
   return deny(
     status === "idle" || status === "completed" ? "nothing_to_pause" : "invalid_state",
@@ -136,7 +189,13 @@ export function canPause(status: SystemStatus): CommandGuardResult {
   );
 }
 
-export function canStop(status: SystemStatus): CommandGuardResult {
+export function canStop(
+  status: SystemStatus,
+  context: CommandContext = {},
+): CommandGuardResult {
+  const rate = touchRateRejection(context, status);
+  if (rate) return rate;
+
   const stoppable: SystemStatus[] = ["erasing", "countdown", "paused", "obstacle-detected"];
   if (stoppable.includes(status)) return { allowed: true };
   return deny("nothing_to_stop", status, `Stop is unavailable while status is '${status}'.`);
@@ -152,9 +211,9 @@ export function evaluateCommand(
     case "start":
       return canStart(status, context);
     case "pause":
-      return canPause(status);
+      return canPause(status, context);
     case "stop":
-      return canStop(status);
+      return canStop(status, context);
   }
 }
 
