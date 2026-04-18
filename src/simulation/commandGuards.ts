@@ -17,6 +17,10 @@ import {
   checkTouchRateLimit,
   DEFAULT_TOUCH_MIN_INTERVAL_MS,
 } from "./touchRateLimit";
+import {
+  DEFAULT_VOICE_CONFIDENCE_MIN,
+  type VoiceIntent,
+} from "./voiceIntent";
 
 /**
  * FR2 command control — pure, side-effect free guards for start / pause / stop
@@ -51,6 +55,11 @@ import {
  *     Start is rejected with `notification_not_acknowledged` until the
  *     warning is acknowledged, so accidental taps during the grace
  *     window can't bypass the "notify me before erase" policy.
+ *   - F8 callers set `context.source = "voice"` and pass a `voiceIntent`
+ *     (see `parseVoiceIntent`). The guard rejects when the intent's
+ *     action mismatches the attempted action or the confidence is below
+ *     `voiceConfidenceMin` (default `DEFAULT_VOICE_CONFIDENCE_MIN`).
+ *     Non-voice sources are unaffected.
  *   - F1 callers may omit the context entirely; full-erase semantics apply.
  *
  * Rejection codes:
@@ -71,6 +80,12 @@ import {
  *   - `notification_not_acknowledged`
  *                              — F6: Start pressed while a pre-erase
  *                                warning is still pending acknowledgment.
+ *   - `low_confidence`         — F8: voice intent confidence below
+ *                                threshold.
+ *   - `unrecognized_voice_command`
+ *                              — F8: transcript parsed but no known
+ *                                action, or intent action mismatches
+ *                                the attempted command.
  */
 
 export type CommandRejectionCode =
@@ -84,9 +99,16 @@ export type CommandRejectionCode =
   | "schedule_not_due"
   | "schedule_expired"
   | "rate_limited"
-  | "notification_not_acknowledged";
+  | "notification_not_acknowledged"
+  | "low_confidence"
+  | "unrecognized_voice_command";
 
-export type CommandSource = "touch" | "mouse" | "keyboard" | "programmatic";
+export type CommandSource =
+  | "touch"
+  | "mouse"
+  | "keyboard"
+  | "programmatic"
+  | "voice";
 
 export interface CommandRejection {
   code: CommandRejectionCode;
@@ -108,7 +130,53 @@ export interface CommandContext {
   minTouchIntervalMs?: number;
   requireAcknowledgment?: boolean;
   acknowledgedAt?: Date | number | null;
+  voiceIntent?: VoiceIntent | null;
+  voiceConfidenceMin?: number;
 }
+
+/**
+ * F8: validate a voice-sourced command against its parsed intent. Runs
+ * only when `source === "voice"`. Returns a populated rejection when
+ * the intent mismatches / is below threshold, otherwise null.
+ */
+const voiceRejection = (
+  action: CommandAction,
+  context: CommandContext,
+  status: SystemStatus,
+): CommandGuardResult | null => {
+  if (context.source !== "voice") return null;
+  const intent = context.voiceIntent;
+  if (intent == null) {
+    return deny(
+      "unrecognized_voice_command",
+      status,
+      "Voice command ignored — no intent parsed from transcript.",
+    );
+  }
+  if (intent.action == null) {
+    return deny(
+      "unrecognized_voice_command",
+      status,
+      `Voice command ignored — transcript '${intent.normalized}' did not match a known action.`,
+    );
+  }
+  if (intent.action !== action) {
+    return deny(
+      "unrecognized_voice_command",
+      status,
+      `Voice command mismatch — heard '${intent.action}', expected '${action}'.`,
+    );
+  }
+  const min = context.voiceConfidenceMin ?? DEFAULT_VOICE_CONFIDENCE_MIN;
+  if (intent.confidence < min) {
+    return deny(
+      "low_confidence",
+      status,
+      `Voice command ignored — confidence ${intent.confidence.toFixed(2)} below ${min.toFixed(2)}.`,
+    );
+  }
+  return null;
+};
 
 /**
  * F4: If the command arrived from a touchscreen / mobile tap, reject
@@ -165,6 +233,8 @@ export function canStart(
 ): CommandGuardResult {
   const rate = touchRateRejection(context, status);
   if (rate) return rate;
+  const voice = voiceRejection("start", context, status);
+  if (voice) return voice;
 
   if (status === "erasing" || status === "countdown") {
     return deny("already_running", status, `Start ignored — erase is already ${status}.`);
@@ -199,6 +269,8 @@ export function canPause(
 ): CommandGuardResult {
   const rate = touchRateRejection(context, status);
   if (rate) return rate;
+  const voice = voiceRejection("pause", context, status);
+  if (voice) return voice;
 
   if (status === "erasing") return { allowed: true };
   return deny(
@@ -214,6 +286,8 @@ export function canStop(
 ): CommandGuardResult {
   const rate = touchRateRejection(context, status);
   if (rate) return rate;
+  const voice = voiceRejection("stop", context, status);
+  if (voice) return voice;
 
   const stoppable: SystemStatus[] = ["erasing", "countdown", "paused", "obstacle-detected"];
   if (stoppable.includes(status)) return { allowed: true };

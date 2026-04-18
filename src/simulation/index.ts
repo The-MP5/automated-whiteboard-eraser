@@ -77,6 +77,21 @@ export type {
   NotificationEventInput,
   NotificationEventKind,
 } from "./notificationEvents";
+export {
+  DEFAULT_VOICE_CONFIDENCE_MIN,
+  DEFAULT_WAKE_WORDS,
+  parseVoiceIntent,
+} from "./voiceIntent";
+export type {
+  ParseVoiceIntentOptions,
+  VoiceIntent,
+} from "./voiceIntent";
+export { createVoiceEvent } from "./voiceEvents";
+export type {
+  VoiceEvent,
+  VoiceEventInput,
+  VoiceEventKind,
+} from "./voiceEvents";
 export { validateEraseArea } from "./validateEraseArea";
 export type {
   CanvasBounds,
