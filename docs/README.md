@@ -10,4 +10,5 @@
 | [LAB6_LOVABLE_FEATURE_EXTENSION.md](./LAB6_LOVABLE_FEATURE_EXTENSION.md) | Lab 6 — Lovable.dev feature extension (PR documentation, Subissue 2.3 / FR5) |
 | [AI_VERIFICATION_CHECKLIST.md](./AI_VERIFICATION_CHECKLIST.md) | Risk R1 — mandatory review checklist for AI-generated edits affecting NFR1 / FR4 / Story 6 |
 | [DATA_RETENTION_AND_SECURITY.md](./DATA_RETENTION_AND_SECURITY.md) | Risk R2 — data-retention policy, `.env` hygiene, and Supabase RLS requirements for snapshots / logs / audit events |
+| [DEPENDENCY_RISK_AND_UPGRADES.md](./DEPENDENCY_RISK_AND_UPGRADES.md) | Risk R3 — dependency risk tiers (Supabase / Fabric / React / Radix / tooling), pinning policy, Dependabot guardrails, and per-tier verification matrix |
 | [architecture-diagram.svg](./architecture-diagram.svg) | Architecture diagram (referenced by the project reset report) |
